@@ -18,9 +18,7 @@ public class QueryExecutor implements QueryReader {
     private static final String FILE_PATH_TO_MEDIA_SCRIPT = "src/main/resources/queries/get_media.sql";
     private static final String FILE_PATH_TO_CONTENT_SCRIPT = "src/main/resources/queries/get_web_content.sql";
 
-    private static final String url = "jdbc:postgresql://localhost:15432/postgres";
-    private static final String user = "postgres";
-    private static final String password = "mysecretpassword";
+
 
 
     public List<Content> getAllWebContent() throws SQLException {
