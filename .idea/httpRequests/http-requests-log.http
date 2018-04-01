@@ -1,0 +1,8 @@
+POST http://localhost:8080/report/download/{contentId}
+
+###
+
+POST http://localhost:8080/report/download/{contentId}
+
+###
+

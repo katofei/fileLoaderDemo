@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+</head>
+<body>
+
+
+<table style="height: 100px; width: 90%;">
+    <tbody>
+    <tr>
+        <td>
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F0FFF0; height: 35px"
+                    th:onclick="|window.location.href='/report/view/webContent'|">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span>View web content</span>
+            </button>
+        </td>
+        <td>
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F8F8FF; height: 35px"
+                    th:onclick="|window.location.href='/report/download/webContent.xls'|">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span>Download web content</span>
+            </button>
+        </td>
+        <td>
+            <form method="POST" th:action="@{/upload}" enctype="multipart/form-data" >
+                <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"> <!--Don't know action-->
+                    <span>Upload</span>
+                </button>
+                <input class="file-path validate" type="text" placeholder="Upload web content file">
+            </form>
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px">
+                <span>Compare file with server</span>
+            </button>
+        </td>
+        <td>
+            <form method="POST" th:action="@{/report/loadFile}" enctype="multipart/form-data" >
+                <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"> <!--Don't know action-->
+                    <span>Upload</span>
+                </button>
+                <input class="file-path validate" type="text" placeholder="Upload web content files">
+            </form>
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span>Compare files</span>
+            </button>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F0FFF0; height: 35px"
+                    th:onclick="|window.location.href='/report/view/mediaFiles'|">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span>View media files</span>
+            </button>
+        </td>
+        <td>
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F8F8FF; height: 35px"
+                    th:onclick="|window.location.href='/report/download/mediaFilesXLS'|">
+
+
+
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span>Download media files</span>
+            </button>
+
+            <a th:href="@{/report/download.xls}">
+                <button class="btn">Download Excel</button>
+            </a>
+
+        </td>
+        <td>
+            <form method="POST" th:action="@{/report/loadFile}" enctype="multipart/form-data" >
+                <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"> <!--Don't know action-->
+                    <span>Upload</span>
+                </button>
+                <input class="file-path validate" type="text" placeholder="Upload media file">
+            </form>
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px">
+                <span>Compare file with server</span>
+            </button>
+        </td>
+        <td>
+            <form method="POST" th:action="@{/report/loadFile}" enctype="multipart/form-data" >
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"> <!--Don't know action-->
+                <span>Upload</span>
+            </button>
+            <input class="file-path validate" type="text" placeholder="Upload media files">
+            </form><!--Don't know action-->
+            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px">
+                <span>Compare files </span>
+            </button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+<table>
+    <thead style="width:90%; font-weight: bold; font-family: 'Times New Roman',sans-serif; text-align: center; background-color: #A9A9A9;">
+    <tr style="border: 1px solid black;">
+        <td style="width: 18%;border: 1px solid black;">Title</td>
+        <td style="width: 18%;border: 1px solid black;">Version</td>
+        <td style="width: 18%;border: 1px solid black;">Size</td>
+        <td style="width: 18%;border: 1px solid black;">Folder</td>
+        <td style="width: 18%;border: 1px solid black;">Modified when</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="content:${allContentList}"
+        style="align-content: left; font-family: 'Times New Roman',serif; font-weight: normal; background-color: #DCDCDC">
+        <th th:text="${content.name}"
+            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
+        <th th:text="${content.version}"
+            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
+        <th th:text="${content.size}"
+            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
+        <th th:text="${content.folder}"
+            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
+        <th th:text="${content.modifiedWhen}"
+            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
+    </tr>
+    </tbody>
+</table>
+
+
+<table>
+    <thead style="width:90%; font-weight: bold; font-family: 'Times New Roman',sans-serif; text-align: center; background-color:#A9A9A9;">
+    <tr style="border: 1px solid black;">
+        <td style="width: 15%; border: 1px solid black;">Title</td>
+        <td style="width: 15%; border: 1px solid black;">Version</td>
+        <td style="width: 15%; border: 1px solid black;">Size</td>
+        <td style="width: 15%; border: 1px solid black;">Folder</td>
+        <td style="width: 15%; border: 1px solid black;">Modified when</td>
+        <td style="width: 15%; border: 1px solid black;">Extension</td>
+        <td style="width: 15%; border: 1px solid black;">Mime type</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="mediaFile:${mediaList}" style="font-family: 'Times New Roman',serif; background-color: #DCDCDC">
+        <th th:text="${mediaFile.name}"
+            style="width:15%; border: 1px solid black; font-weight: normal; align-content: left;"></th>
+        <th th:text="${mediaFile.version}"
+            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
+        <th th:text="${mediaFile.size}"
+            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
+        <th th:text="${mediaFile.folder}" style="width:15%; border: 1px solid black;font-weight: normal;"></th>
+        <th th:text="${mediaFile.modifiedWhen}"
+            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
+        <th th:text="${mediaFile.extension}"
+            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
+        <th th:text="${mediaFile.mimeType}"
+            style=" width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
