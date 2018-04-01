@@ -18,8 +18,11 @@ import java.util.Map;
 @Service
 public class WebContentExcelView  extends AbstractXlsView  implements ExcelView {
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    public WebContentExcelView() {
+       setContentType("application/xsl");
+    }
 
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 
     private void createHeader(Sheet sheet, CellStyle style) {
         Row header = sheet.createRow(0);
@@ -53,7 +56,7 @@ public class WebContentExcelView  extends AbstractXlsView  implements ExcelView 
         CellStyle style = createStyle(workbook);
         createHeader(sheet, style);
 
-        int rowCount = 0;
+        int rowCount = 1;
         Row mediaFileRow;
 
         for (Content content : contentList) {

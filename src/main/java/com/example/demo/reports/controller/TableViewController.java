@@ -25,7 +25,6 @@ public class TableViewController{
         this.queryExecutor = queryExecutor;
     }
 
-
     @GetMapping(value = "/report")
     public ModelAndView getView(){
         return new ModelAndView("report");
@@ -82,7 +81,7 @@ public class TableViewController{
     }
 
 
-    @GetMapping(value = "/report/compare/webContest")
+    @GetMapping(value = "/report/compare/webContent")
     public ModelAndView compareContentWithCurrent() throws SQLException {
         log.info("compareContentWithCurrent started");
         ModelAndView modelAndView = new ModelAndView("report");

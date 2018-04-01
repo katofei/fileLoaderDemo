@@ -2,8 +2,10 @@ package com.example.demo.reports.view;
 
 import com.example.demo.reports.entity.MediaFile;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.*;
-import org.springframework.stereotype.Component;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
@@ -16,10 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Component
+@Service
 public class MediaFileExcelView extends AbstractXlsView implements ExcelView {
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    public MediaFileExcelView(){
+        setContentType("application/xls");
+    }
+
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 
     private void createHeader(Sheet sheet, CellStyle style) {
         Row header = sheet.createRow(0);

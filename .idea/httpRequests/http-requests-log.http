@@ -1,3 +1,27 @@
+GET http://localhost:8080/report/download/mediaFiles
+
+<> 2018-04-01T023141.200.html
+
+###
+
+GET http://localhost:8080/report/download/mediaFiles
+
+<> 2018-04-01T022513.200.html
+
+###
+
+GET http://localhost:8080/report/download/mediaFiles
+
+<> 2018-04-01T021042.500.json
+
+###
+
+GET http://localhost:8080/report/download/mediaFiles
+
+<> 2018-04-01T020652.500.json
+
+###
+
 POST http://localhost:8080/report/download/{contentId}
 
 ###

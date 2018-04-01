@@ -18,7 +18,9 @@ public class QueryExecutor implements QueryReader {
     private static final String FILE_PATH_TO_MEDIA_SCRIPT = "src/main/resources/queries/get_media.sql";
     private static final String FILE_PATH_TO_CONTENT_SCRIPT = "src/main/resources/queries/get_web_content.sql";
 
-
+    private static final String url = System.getenv("DB_URL");
+    private static final String user = System.getenv("DB_USER");
+    private static final String password = System.getenv("DB_PASSWORD");
 
 
     public List<Content> getAllWebContent() throws SQLException {

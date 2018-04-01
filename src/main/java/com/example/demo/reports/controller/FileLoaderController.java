@@ -10,7 +10,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -107,7 +106,7 @@ public class FileLoaderController {
         Map<String, Object> map = new HashMap<>();
         map.put("contentList", allContentList);
         webContentExcelView.buildExcelDocument(map, workbook, httpServletRequest, httpServletResponse);
-        return "";
+        return "redirect:/report";
     }
 
     @GetMapping(value = "/report/download/mediaFiles")
@@ -119,7 +118,7 @@ public class FileLoaderController {
         Workbook workbook = new HSSFWorkbook();
         map.put("mediaList", allMedia);
         mediaFileExcelView.buildExcelDocument(map, workbook, httpServletRequest, httpServletResponse);
-        return "";
+        return "redirect:/report";
     }
 
 }
