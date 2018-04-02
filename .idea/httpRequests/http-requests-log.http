@@ -1,3 +1,15 @@
+POST http://localhost:8080/report/loadMultiFiles
+Content-Type: multipart/form-data
+
+###
+
+POST http://localhost:8080/report/loadMultiFiles
+Content-Type: multipart/form-data
+
+<> 2018-04-02T114421.500.json
+
+###
+
 GET http://localhost:8080/report/download/mediaFiles
 
 <> 2018-04-01T023141.200.html

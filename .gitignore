@@ -1,0 +1,11 @@
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+.idea
+target
+.iml
+.ipr
+.iws
+.class

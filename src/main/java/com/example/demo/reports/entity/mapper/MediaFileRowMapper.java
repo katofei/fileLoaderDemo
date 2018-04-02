@@ -16,6 +16,7 @@ public class MediaFileRowMapper implements QueryReader, RowMapper<MediaFile>{
         mediaFile.setFolder(resultSet.getString("folder"));
         mediaFile.setVersion(resultSet.getDouble("version"));
         mediaFile.setExtension(resultSet.getString("extension"));
+        mediaFile.setSize(resultSet.getLong("size_"));
         mediaFile.setModifiedWhen(resultSet.getDate("modifieddate"));
         mediaFile.setMimeType(resultSet.getString("mimetype"));
        return mediaFile;
