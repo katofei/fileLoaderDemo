@@ -28,7 +28,7 @@
             <form method="POST" th:action="@{/report/loadSingleFile}" enctype="multipart/form-data">
                 <input type="submit" placeholder="Upload"
                         style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
-                <input type="file" name = "file"/>
+                <input type="file" name = "multipartFile"/>
             </form>
             <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px"
                     th:onclick="|window.location.href='/report/compare/webWithServer'|">
@@ -68,7 +68,7 @@
             <form method="POST" th:action="@{/report/loadSingleFile}" enctype="multipart/form-data">
                 <input type="submit" placeholder="Upload"
                         style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
-                <input type="file" name="file"/>
+                <input type="file" name="multipartFile"/>
             </form>
             <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px"
                     th:onclick="|window.location.href='/report/compare/mediaWithServer'|">
