@@ -14,7 +14,7 @@ public class ContentRowMapper implements  RowMapper<Content> {
         content.setName(resultSet.getString("title_simple"));
         content.setVersion(resultSet.getDouble("version"));
         content.setFolder(resultSet.getString("folder"));
-        content.setModifiedWhen(resultSet.getDate("modifieddate"));
+        content.setModifiedWhen(resultSet.getTimestamp("modifieddate"));
         content.setSize(resultSet.getLong("size_"));
         return content;
     }

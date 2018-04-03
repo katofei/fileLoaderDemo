@@ -15,9 +15,9 @@ public class MediaFile {
     @ExcelField(position = 1)
     private String name;
     @ExcelField(position = 2)
-    private double version;
+    private Double version;
     @ExcelField(position = 3)
-    private long size;
+    private Long size;
     @ExcelField(position = 4)
     private String folder;
     @ExcelField(position = 5)
@@ -26,4 +26,8 @@ public class MediaFile {
     private String extension;
     @ExcelField(position = 7)
     private String mimeType;
+
+    private boolean checkForNull() {
+        return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null && getMimeType()== null);
+    }
 }

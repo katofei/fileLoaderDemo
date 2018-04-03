@@ -22,7 +22,6 @@ public class MediaFileParser {
         List<MediaFile> mediaFileList;
         try {
             FileInputStream fis = new FileInputStream(fileName);
-
             Workbook workbook = null;
             if (fileName.toLowerCase().endsWith("xlsx")) {
                 workbook = new XSSFWorkbook(fis);

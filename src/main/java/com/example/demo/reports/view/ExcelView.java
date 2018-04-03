@@ -20,7 +20,7 @@ public class ExcelView extends AbstractXlsView {
 
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 
-    private CellStyle createStyle(Workbook workbook) {
+    private CellStyle createHeaderStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setFontName("Times New Roman");
@@ -29,11 +29,21 @@ public class ExcelView extends AbstractXlsView {
         font.setBold(true);
         font.setColor(HSSFColor.WHITE.index);
         style.setFont(font);
-
-        CreationHelper createHelper = workbook.getCreationHelper();
-        style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy hh:mm"));
         return style;
     }
+
+
+    private CellStyle createDateStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(false);
+        font.setColor(HSSFColor.BLACK.index);
+        style.setFont(font);
+        CreationHelper createHelper = workbook.getCreationHelper();
+        style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
+        return style;
+    }
+
 
     private void createWebContentHeader(Sheet sheet, CellStyle style) {
         Row header = sheet.createRow(0);
@@ -83,8 +93,10 @@ public class ExcelView extends AbstractXlsView {
             Sheet sheet = workbook.createSheet("Media files");
             sheet.setDefaultColumnWidth(20);
 
-            CellStyle style = createStyle(workbook);
+            CellStyle style = createHeaderStyle(workbook);
+            CellStyle dateStyle = createDateStyle(workbook);
             createMediaHeader(sheet, style);
+
 
             int rowCount = 1;
             Row mediaFileRow;
@@ -96,7 +108,9 @@ public class ExcelView extends AbstractXlsView {
                     mediaFileRow.createCell(1).setCellValue(file.getVersion());
                     mediaFileRow.createCell(2).setCellValue(file.getSize());
                     mediaFileRow.createCell(3).setCellValue(file.getFolder());
-                    mediaFileRow.createCell(4).setCellValue(file.getModifiedWhen());
+                    Cell cell = mediaFileRow.createCell(4);
+                    cell.setCellValue(file.getModifiedWhen());
+                    cell.setCellStyle(dateStyle);
                     mediaFileRow.createCell(5).setCellValue(file.getExtension());
                     mediaFileRow.createCell(6).setCellValue(file.getMimeType());
                 }
@@ -113,7 +127,8 @@ public class ExcelView extends AbstractXlsView {
             Sheet sheet = workbook.createSheet("Web content");
             sheet.setDefaultColumnWidth(20);
 
-            CellStyle style = createStyle(workbook);
+            CellStyle style = createHeaderStyle(workbook);
+            CellStyle dateStyle = createDateStyle(workbook);
             createWebContentHeader(sheet, style);
 
             int rowCount = 1;
@@ -125,7 +140,9 @@ public class ExcelView extends AbstractXlsView {
                     mediaFileRow.createCell(1).setCellValue(content.getVersion());
                     mediaFileRow.createCell(2).setCellValue(content.getSize());
                     mediaFileRow.createCell(3).setCellValue(content.getFolder());
-                    mediaFileRow.createCell(4).setCellValue(content.getModifiedWhen());
+                    Cell cell = mediaFileRow.createCell(4);
+                    cell.setCellValue(content.getModifiedWhen());
+                    cell.setCellStyle(dateStyle);
                 }
             }
         }

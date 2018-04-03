@@ -16,7 +16,7 @@ public class MediaFileRowMapper implements RowMapper<MediaFile>{
         mediaFile.setVersion(resultSet.getDouble("version"));
         mediaFile.setExtension(resultSet.getString("extension"));
         mediaFile.setSize(resultSet.getLong("size_"));
-        mediaFile.setModifiedWhen(resultSet.getDate("modifieddate"));
+        mediaFile.setModifiedWhen(resultSet.getTimestamp("modifieddate"));
         mediaFile.setMimeType(resultSet.getString("mimetype"));
        return mediaFile;
     }

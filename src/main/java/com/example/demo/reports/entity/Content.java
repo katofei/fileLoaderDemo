@@ -15,11 +15,15 @@ public class Content {
     @ExcelField(position = 1)
     private String name;
     @ExcelField(position = 2)
-    private double version;
+    private Double version;
     @ExcelField(position = 3)
-    private long size;
+    private Long size;
     @ExcelField(position = 4)
     private String folder;
     @ExcelField(position = 5)
     private Date modifiedWhen;
+
+    public boolean checkForNull() {
+        return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null);
+    }
 }
