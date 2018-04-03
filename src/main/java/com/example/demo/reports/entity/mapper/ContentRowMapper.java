@@ -1,13 +1,12 @@
 package com.example.demo.reports.entity.mapper;
 
-import com.example.demo.reports.QueryReader;
 import com.example.demo.reports.entity.Content;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ContentRowMapper implements QueryReader, RowMapper<Content> {
+public class ContentRowMapper implements  RowMapper<Content> {
 
     @Override
     public Content mapRow(ResultSet resultSet, int i) throws SQLException {

@@ -1,13 +1,12 @@
 package com.example.demo.reports.entity.mapper;
 
-import com.example.demo.reports.QueryReader;
 import com.example.demo.reports.entity.MediaFile;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MediaFileRowMapper implements QueryReader, RowMapper<MediaFile>{
+public class MediaFileRowMapper implements RowMapper<MediaFile>{
 
     @Override
     public MediaFile mapRow(ResultSet resultSet, int i) throws SQLException {
