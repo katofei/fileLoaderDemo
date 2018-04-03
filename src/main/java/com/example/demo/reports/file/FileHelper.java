@@ -1,5 +1,6 @@
 package com.example.demo.reports.file;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,8 +9,10 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+@Slf4j
 public class FileHelper {
-    public static File upload(MultipartFile file, HttpServletRequest request, String uploadFolder) {
+    public static File upload(MultipartFile file, HttpServletRequest request, String uploadFolder) throws Exception {
+       log.info(" upload () in FileHelper.class started");
         String fileName;
         File serverFile;
         try {
@@ -25,6 +28,7 @@ public class FileHelper {
                     dir.mkdirs();
                 serverFile = new File(dir.getAbsolutePath()
                         + File.separator + fileName);
+                log.info("Server file is {}", serverFile.getAbsolutePath());
                 BufferedOutputStream stream = new BufferedOutputStream(
                         new FileOutputStream(serverFile));
 
@@ -32,10 +36,11 @@ public class FileHelper {
                 stream.close();
                 return serverFile;
             } else {
+                log.error("File is empty");
                 serverFile = null;
             }
         } catch (Exception e) {
-            serverFile = null;
+            throw new Exception("Error during adding file to server");
         }
         return serverFile;
     }
