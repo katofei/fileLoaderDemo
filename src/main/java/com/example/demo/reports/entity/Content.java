@@ -2,28 +2,38 @@ package com.example.demo.reports.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javafunk.excelparser.annotations.ExcelField;
-import org.javafunk.excelparser.annotations.ExcelObject;
-import org.javafunk.excelparser.annotations.ParseType;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-@ExcelObject(parseType = ParseType.ROW, start = 2, end = 500)
-public class Content {
-    @ExcelField(position = 1)
+public abstract class Content {
+
     private String name;
-    @ExcelField(position = 2)
     private Double version;
-    @ExcelField(position = 3)
     private Long size;
-    @ExcelField(position = 4)
     private String folder;
-    @ExcelField(position = 5)
     private Date modifiedWhen;
 
     public boolean checkForNull() {
-        return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null);
+        return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null && getVersion() == null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Content content = (Content) o;
+        return Objects.equals(name, content.name) &&
+                Objects.equals(version, content.version) &&
+                Objects.equals(size, content.size) &&
+                Objects.equals(folder, content.folder) &&
+                Objects.equals(modifiedWhen, content.modifiedWhen);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, version, size, folder, modifiedWhen);
     }
 }

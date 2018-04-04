@@ -2,6 +2,7 @@ package com.example.demo.reports.file;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +11,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 @Slf4j
+@Service
 public class FileHelper {
-    public static File upload(MultipartFile file, HttpServletRequest request, String uploadFolder) throws Exception {
+    public File upload(MultipartFile file, HttpServletRequest request, String uploadFolder) throws Exception {
        log.info(" upload () in FileHelper.class started");
         String fileName;
         File serverFile;
@@ -45,7 +47,7 @@ public class FileHelper {
         return serverFile;
     }
 
-    public static void delete(File file) {
+    public void delete(File file) {
         try {
             FileUtils.cleanDirectory(file.getParentFile().getParentFile());
         } catch (Exception e) {

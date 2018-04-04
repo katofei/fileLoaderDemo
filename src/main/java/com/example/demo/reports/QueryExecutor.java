@@ -2,7 +2,8 @@ package com.example.demo.reports;
 
 import com.example.demo.reports.entity.Content;
 import com.example.demo.reports.entity.MediaFile;
-import com.example.demo.reports.entity.mapper.ContentRowMapper;
+import com.example.demo.reports.entity.WebContent;
+import com.example.demo.reports.entity.mapper.WebContentRowMapper;
 import com.example.demo.reports.entity.mapper.MediaFileRowMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,18 +24,17 @@ public class QueryExecutor implements QueryReader {
     private static final String password = System.getenv("DB_PASSWORD");
 
 
-    public List<Content> getAllWebContent() throws SQLException {
+    public List<WebContent> getAllWebContent() throws SQLException {
         log.info("getAllWebContent started");
-        List<Content> contentList = new ArrayList<>();
+        List<WebContent> contentList = new ArrayList<>();
         String query = readQueryFromFile(FILE_PATH_TO_CONTENT_SCRIPT);
-        log.info(query);
         try(Connection con = DriverManager.getConnection(url, user, password)){
             PreparedStatement pst = con.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
-            ContentRowMapper mapper = new ContentRowMapper();
+            WebContentRowMapper mapper = new WebContentRowMapper();
             int i = 0;
             while (rs.next()){
-                Content content = mapper.mapRow(rs, i++);
+                WebContent content = mapper.mapRow(rs, i++);
                 contentList.add(content);
             }
         } catch (SQLException e) {
@@ -49,7 +49,6 @@ public class QueryExecutor implements QueryReader {
         log.info("getAllMediaFiles started");
         List<MediaFile> mediaFileList = new ArrayList<>();
         String query = readQueryFromFile(FILE_PATH_TO_MEDIA_SCRIPT);
-        log.info(query);
         try(Connection con = DriverManager.getConnection(url, user, password)){
             PreparedStatement pst = con.prepareStatement(query);
             ResultSet rs = pst.executeQuery();

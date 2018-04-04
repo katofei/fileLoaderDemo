@@ -1,6 +1,6 @@
 package com.example.demo.reports.file;
 
-import com.example.demo.reports.entity.Content;
+import com.example.demo.reports.entity.WebContent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,11 +16,11 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ContentFileParser {
+public class WebContentFileParser {
 
-    public List<Content> parse(String fileName) throws IOException {
+    public List<WebContent> parse(String fileName) throws IOException {
        log.info("parse for content started");
-        List<Content> contentList;
+        List<WebContent> contentList;
         try {
             FileInputStream fis = new FileInputStream(fileName);
 
@@ -33,7 +33,7 @@ public class ContentFileParser {
 
             Sheet sheet = workbook != null ? workbook.getSheetAt(0) : null;
             SheetParser parser = new SheetParser();
-            List<Content> sectionList = parser.createEntity(sheet, Content.class, error -> {
+            List<WebContent> sectionList = parser.createEntity(sheet, WebContent.class, error -> {
                 throw error;
             });
             contentList = new ArrayList<>(sectionList);

@@ -24,26 +24,26 @@
                 <span>Download web content</span>
             </button>
         </td>
-        <td>
+        <td rowspan="2">
             <form method="POST" th:action="@{/report/loadSingleFile}" enctype="multipart/form-data">
                 <input type="submit" placeholder="Upload"
-                        style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
-                <input type="file" name = "multipartFile"/>
+                       style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
+                <input type="file" name="multipartFile"/>
             </form>
             <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px"
-                    th:onclick="|window.location.href='/report/compare/webWithServer'|">
+                    th:onclick="|window.location.href='/report/compare/withServer'|">
                 <span>Compare file with server</span>
             </button>
         </td>
-        <td>
+        <td rowspan="2">
             <form method="POST" th:action="@{/report/loadMultiFiles}" enctype="multipart/form-data">
                 <input type="submit" placeholder="Upload"
-                        style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"/>
+                       style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"/>
                 <input type="file" name="multipartFiles"/>
-                <input type="file" name="multipartFiles" />
+                <input type="file" name="multipartFiles"/>
             </form>
             <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"
-                    th:onclick="|window.location.href='/report/compare/webFiles'|">
+                    th:onclick="|window.location.href='/report/compare/files'|">
                 <span>Compare files</span>
             </button>
         </td>
@@ -64,35 +64,37 @@
                 <span>Download media files</span>
             </button>
         </td>
-        <td>
-            <form method="POST" th:action="@{/report/loadSingleFile}" enctype="multipart/form-data">
-                <input type="submit" placeholder="Upload"
-                        style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
-                <input type="file" name="multipartFile"/>
-            </form>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px"
-                    th:onclick="|window.location.href='/report/compare/mediaWithServer'|">
-                <span>Compare file with server</span>
-            </button>
-        </td>
-        <td>
-            <form method="POST" th:action="@{/report/loadMultiFiles}" enctype="multipart/form-data">
-                <input type="submit" placeholder="Upload" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"/>
-                <input type="file" name="multipartFiles"/>
-                <input type="file" name="multipartFiles"/>
-            </form>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"
-                    th:onclick="|window.location.href='/report/compare/mediaFiles'|">
-                <span>Compare files </span>
-            </button>
-        </td>
+        <!--       <td>
+                   <form method="POST" th:action="@{/report/loadSingleFile}" enctype="multipart/form-data">
+                       <input type="submit" placeholder="Upload"
+                               style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
+                       <input type="file" name="multipartFile"/>
+                   </form>
+                   <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px"
+                           th:onclick="|window.location.href='/report/compare/mediaWithServer'|">
+                       <span>Compare file with server</span>
+                   </button>
+               </td>
+               <td>
+                   <form method="POST" th:action="@{/report/loadMultiFiles}" enctype="multipart/form-data">
+                       <input type="submit" placeholder="Upload" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"/>
+                       <input type="file" name="multipartFiles"/>
+                       <input type="file" name="multipartFiles"/>
+                   </form>
+                   <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"
+                           th:onclick="|window.location.href='/report/compare/mediaFiles'|">
+                       <span>Compare files</span>
+                   </button>
+               </td>-->
     </tr>
 
     </tbody>
 </table>
 
-<p th:text="${errorMessage}" style="color:#FA5858; text-align: center; font-weight: bold; font-family: Arial, sans-serif"></p>
-<p th:text="${successMessage}" style="color:#3CB371; text-align: center; font-weight: bold; font-family: Arial, sans-serif"></p>
+<p th:text="${errorMessage}"
+   style="color:#FA5858; text-align: center; font-weight: bold; font-family: Arial, sans-serif"></p>
+<p th:text="${successMessage}"
+   style="color:#3CB371; text-align: center; font-weight: bold; font-family: Arial, sans-serif"></p>
 
 <table>
     <thead style="width:90%; font-weight: bold; font-family: 'Times New Roman',sans-serif; text-align: center; background-color: #A9A9A9;">
@@ -134,19 +136,28 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="mediaFile:${mediaList}" style="font-family: 'Times New Roman',serif; background-color: #DCDCDC">
-        <th th:text="${mediaFile.name}"
+    <tr th:each="mediaFile:${mediaList}" th:each="mediaFromFile:${mediaListFromFile}"
+        style="font-family: 'Times New Roman',serif; background-color: #DCDCDC">
+        <th th:if="${mediaFile.name}eq${mediaFromFile.name}"
+            th:text="${mediaFile.name}+' | '+${mediaFromFile.name}"
             style="width:15%; border: 1px solid black; font-weight: normal; align-content: left;"></th>
-        <th th:text="${mediaFile.version}"
+        <th th:if="${mediaFile.version}eq${mediaFromFile.version}"
+            th:text="${mediaFile.version}+' | '+${mediaFromFile.version}"
             style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:text="${mediaFile.size}"
+        <th th:if="${mediaFile.size}eq${mediaFromFile.size}"
+            th:text="${mediaFile.size}+' | '+${mediaFromFile.size}"
             style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:text="${mediaFile.folder}" style="width:15%; border: 1px solid black;font-weight: normal;"></th>
-        <th th:text="${mediaFile.modifiedWhen}"
+        <th th:if="${mediaFile.folder}eq${mediaFromFile.folder}"
+            th:text="${mediaFile.folder}+' | '+${mediaFromFile.folder}"
+            style="width:15%; border: 1px solid black;font-weight: normal;"></th>
+        <th th:if="${mediaFile.modifiedWhen}eq${mediaFromFile.modifiedWhen}"
+            th:text="${mediaFile.modifiedWhen}+' | '+${mediaFromFile.modifiedWhen}"
             style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:text="${mediaFile.extension}"
+        <th th:if="${mediaFile.extension}eq${mediaFromFile.extension}"
+            th:text="${mediaFile.extension}+' | '+${mediaFromFile.extension}"
             style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:text="${mediaFile.mimeType}"
+        <th th:if="${mediaFile.mimeType}eq${mediaFromFile.mimeType}"
+            th:text="${mediaFile.mimeType}+' | '+${mediaFromFile.mimeType}"
             style=" width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
     </tr>
     </tbody>
