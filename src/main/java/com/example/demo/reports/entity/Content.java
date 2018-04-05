@@ -3,6 +3,7 @@ package com.example.demo.reports.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 

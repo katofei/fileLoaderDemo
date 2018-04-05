@@ -85,8 +85,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="content:${allContentList}"
-        style="align-content: left; font-family: 'Times New Roman',serif; font-weight: normal; background-color: #DCDCDC">
+    <tr th:each="content,iterStat:${allContentList}" style="align-content: left; font-family: 'Times New Roman',serif;
+    font-weight: normal; background-color: #DCDCDC">
         <th th:text="${content.name}"
             style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
         <th th:text="${content.version}"

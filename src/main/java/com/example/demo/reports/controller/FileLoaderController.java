@@ -1,6 +1,7 @@
 package com.example.demo.reports.controller;
 
 import com.example.demo.reports.QueryExecutor;
+import com.example.demo.reports.entity.Content;
 import com.example.demo.reports.entity.MediaFile;
 import com.example.demo.reports.entity.WebContent;
 import com.example.demo.reports.file.FileHelper;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -29,17 +31,15 @@ public class FileLoaderController {
     private final QueryExecutor queryExecutor;
     private final WebContentFileParser contentFileParser;
     private final MediaFileParser mediaFileParser;
-    private final FileHelper fileHelper;
     private static final String mediaFilePrefix = "media-file-details";
     private static final String webFilePrefix = "web-content-details";
 
     @Autowired
     public FileLoaderController(QueryExecutor queryExecutor, WebContentFileParser contentFileParser,
-                                MediaFileParser mediaFileParser, FileHelper fileHelper) {
+                                MediaFileParser mediaFileParser) {
         this.queryExecutor = queryExecutor;
         this.contentFileParser = contentFileParser;
         this.mediaFileParser = mediaFileParser;
-        this.fileHelper = fileHelper;
     }
 
     @GetMapping(value = "/report/download/webContent")
@@ -66,12 +66,12 @@ public class FileLoaderController {
         String originalFilename = file.getOriginalFilename();
         log.info("Original file name {}", originalFilename);
         if (originalFilename.contains(webFilePrefix)) {
-            List<WebContent> webContentList = instantiateAndReadWebFile(file, request);
+            List<? extends Content> webContentList = instantiateAndReadWebFile(file, request);
             request.getSession().setAttribute("compareWhat", webContentList);
             redirectAttributes.addFlashAttribute("successMessage", "File " + originalFilename
                     + " successfully uploaded");
         } else if (originalFilename.contains(mediaFilePrefix)) {
-            List<MediaFile> mediaFileList = instantiateAndReaMediaFile(file, request);
+            List<? extends Content> mediaFileList = instantiateAndReaMediaFile(file, request);
             request.getSession().setAttribute("compareWhat", mediaFileList);
             redirectAttributes.addFlashAttribute("successMessage", "File " + originalFilename
                     + " successfully uploaded");
@@ -93,15 +93,16 @@ public class FileLoaderController {
         }
         if (ifFileNamesEquals(originalFilenames)) {
             if (originalFilenames.get(0).contains(webFilePrefix)) {
-                List<WebContent> compareWhat = instantiateAndReadWebFile(files.get(0), request);
+                List<? extends Content> compareWhat = instantiateAndReadWebFile(files.get(0), request);
                 request.getSession().setAttribute("compareWhat", compareWhat);
-                List<WebContent> compareWith = instantiateAndReadWebFile(files.get(1), request);
+                List<? extends Content> compareWith = instantiateAndReadWebFile(files.get(1), request);
                 request.getSession().setAttribute("compareWith", compareWith);
                 redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
             } else if (originalFilenames.get(0).contains(mediaFilePrefix)) {
-                List<MediaFile> compareWhat = instantiateAndReaMediaFile(files.get(0), request);
+                List<? extends Content> compareWhat = instantiateAndReaMediaFile(files.get(0), request);
                 request.getSession().setAttribute("compareWhat", compareWhat);
-                List<MediaFile> compareWith = instantiateAndReaMediaFile(files.get(1), request);
+
+                List<? extends Content> compareWith = instantiateAndReaMediaFile(files.get(1), request);
                 request.getSession().setAttribute("compareWith", compareWith);
                 redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
             }
@@ -113,31 +114,56 @@ public class FileLoaderController {
         return ("redirect:/report");
     }
 
-    private List<WebContent> initializeContentSheet(File file) throws IOException {
-        return contentFileParser.parse(file.getAbsolutePath());
-    }
-
-    private List<MediaFile> initializeMediaSheet(File file) throws IOException {
-        return mediaFileParser.parse(file.getAbsolutePath());
-    }
-
-    private List<WebContent> instantiateAndReadWebFile(MultipartFile file, HttpServletRequest request) throws Exception {
-        File report = fileHelper.upload(file, request, "xlsReports");
-        List<WebContent> contentFromFileList = initializeContentSheet(report);
-        fileHelper.delete(report);
+    private List<? extends Content> instantiateAndReadWebFile(MultipartFile file, HttpServletRequest request) throws Exception {
+        log.info("instantiateAndReadWebFile started");
+        File report = FileHelper.upload(file, request, "xlsReports");
+        List<? extends Content> contentFromFileList = initializeContentSheet(report);
+        FileHelper.delete(report);
         return contentFromFileList;
     }
 
-    private List<MediaFile> instantiateAndReaMediaFile(MultipartFile file, HttpServletRequest request) throws Exception {
-        File report = fileHelper.upload(file, request, "xlsReports");
-        List<MediaFile> mediaFileList = initializeMediaSheet(report);
-        fileHelper.delete(report);
+    private List<? extends Content> initializeContentSheet(File file) throws IOException {
+        log.info("initializeContentSheet started");
+        List<WebContent> webContents = contentFileParser.parse(file.getAbsolutePath());
+        return  trimAndFormatCells(webContents);
+    }
+
+    private List<? extends Content> instantiateAndReaMediaFile(MultipartFile file, HttpServletRequest request) throws Exception {
+        log.info("instantiateAndReaMediaFile started");
+        File report = FileHelper.upload(file, request, "xlsReports");
+        List<? extends Content> mediaFileList = initializeMediaSheet(report);
+        FileHelper.delete(report);
         return mediaFileList;
     }
 
+    private List<? extends Content> initializeMediaSheet(File file) throws IOException {
+        log.info("initializeMediaSheet started");
+        List<MediaFile> mediaFiles = mediaFileParser.parse(file.getAbsolutePath());
+        return trimAndFormatCells(mediaFiles);
+    }
+
     private boolean ifFileNamesEquals(List<String> names) {
+        log.info("ifFileNamesEquals started");
         return (names.get(0).contains(webFilePrefix) && names.get(1).contains(webFilePrefix))
                 || (names.get(0).contains(mediaFilePrefix) && names.get(1).contains(mediaFilePrefix));
+    }
+
+    private List<? extends Content> trimAndFormatCells(List<? extends Content> sourceList) {
+        log.info("trimAndFormatCells started");
+        sourceList = sourceList.stream().filter(content -> !content.checkForNull()).collect(Collectors.toList());
+        for (Content content : sourceList) {
+            formatCells(content);
+        }
+        return sourceList;
+    }
+
+    private void formatCells(Content content) {
+        if ("".equals(content.getFolder())) {
+            content.setFolder(null);
+        }
+        if ("".equals(content.getName())) {
+            content.setName(null);
+        }
     }
 }
 

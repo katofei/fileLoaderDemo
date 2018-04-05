@@ -5,6 +5,7 @@ import com.example.demo.reports.entity.Content;
 import com.example.demo.reports.entity.MediaFile;
 import com.example.demo.reports.entity.WebContent;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,9 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -52,7 +52,6 @@ public class TableViewController {
             modelAndView.addObject("errorMessage", "Error!!\n Web content list returned empty");
         }
         modelAndView.addObject("allContentList", allContentList);
-
         return modelAndView;
     }
 
@@ -66,6 +65,7 @@ public class TableViewController {
         }
         modelAndView.addObject("mediaList", allMedia);
         return modelAndView;
+
     }
 
 
@@ -76,22 +76,20 @@ public class TableViewController {
         Object compareWhat = session.getAttribute("compareWhat");
         @SuppressWarnings("unchecked")
         List<Content> listFromFile = (List<Content>) compareWhat;
-        if (! listFromFile.isEmpty() && listFromFile != null)
+        if (!listFromFile.isEmpty())
             if (listFromFile.get(0) instanceof MediaFile) {
                 List<MediaFile> mediaFileListFromServer = queryExecutor.getAllMediaFiles();
                 if (mediaFileListFromServer.isEmpty()) {
                     modelAndView.addObject("errorMessage", "Error!!\n Web content list form server returned empty");
                 } else {
-                    List<? extends Content> mediaListFromFile = trimAndFormatCells(listFromFile);
-                    compareMediaFiles(mediaFileListFromServer, mediaListFromFile, modelAndView);
+                    compareMediaFiles(mediaFileListFromServer, listFromFile, modelAndView);
                 }
             } else if (listFromFile.get(0) instanceof WebContent) {
                 List<WebContent> contentListFromServer = queryExecutor.getAllWebContent();
                 if (contentListFromServer.isEmpty()) {
                     modelAndView.addObject("errorMessage", "Error!!\n Web content list form server returned empty");
                 } else {
-                    List<? extends Content> contentListFormFile = trimAndFormatCells(listFromFile);
-                    compareWebContent(contentListFromServer, contentListFormFile, modelAndView);
+                    compareWebContent(contentListFromServer, listFromFile, modelAndView);
                 }
             }
         return modelAndView;
@@ -108,42 +106,19 @@ public class TableViewController {
         List<Content> listFromFirstFile = (List<Content>) compareWhat;
         @SuppressWarnings("unchecked")
         List<Content> listFromSecondFile = (List<Content>) compareWith;
-        if(!(listFromFirstFile.isEmpty() && listFromFirstFile != null)
-                && !(listFromSecondFile.isEmpty() && listFromSecondFile != null)) {
+        if (!(listFromFirstFile.isEmpty()) && !(listFromSecondFile.isEmpty())) {
             if (listFromFirstFile.get(0) instanceof MediaFile) {
-                List<? extends Content> trimmedFirstFile = trimAndFormatCells(listFromFirstFile);
-                List<? extends Content> trimmedSecondFile =trimAndFormatCells(listFromFirstFile);
-                compareMediaFiles(trimmedFirstFile, trimmedSecondFile, modelAndView);
-            }
-            else if (listFromFirstFile.get(0) instanceof WebContent) {
-                List<? extends Content> trimmedFirstFile = trimAndFormatCells(listFromFirstFile);
-                List<? extends Content> trimmedSecondFile =trimAndFormatCells(listFromFirstFile);
-                compareWebContent(trimmedFirstFile, trimmedSecondFile, modelAndView);
+                compareMediaFiles(listFromFirstFile, listFromSecondFile, modelAndView);
+            } else if (listFromFirstFile.get(0) instanceof WebContent) {
+                compareWebContent(listFromFirstFile, listFromSecondFile, modelAndView);
             }
         }
         return modelAndView;
     }
 
-
     private static boolean compareLists(List<? extends Content> firstList, List<? extends Content> secondList) {
-        boolean result = false;
-        for (Content content : firstList) {
-            for (Content content1 : secondList) {
-                if (content.equals(content1))
-                    result = true;
-            }
-        }
-        return result;
+        return firstList.stream().anyMatch(elem -> secondList.containsAll(firstList));
     }
-
-    private List<? extends Content> trimAndFormatCells(List<? extends Content> sourceList) {
-        sourceList = sourceList.stream().filter(content -> !content.checkForNull()).collect(Collectors.toList());
-        for (Content content : sourceList) {
-            formatCells(content);
-        }
-        return sourceList;
-    }
-
 
     private List<? extends Content> formatDate(List<? extends Content> sourceList) throws ParseException {
         for (Content content : sourceList) {
@@ -155,22 +130,12 @@ public class TableViewController {
         return sourceList;
     }
 
-    private void formatCells(Content content) {
-        if ("".equals(content.getFolder())) {
-            content.setFolder(null);
-        }
-        if ("".equals(content.getName())) {
-            content.setName(null);
-        }
-    }
-
     private void compareWebContent(List<? extends Content> serverList, List<? extends Content> fileList, ModelAndView modelAndView) throws ParseException {
         if (compareLists(formatDate(serverList), fileList)) {
             modelAndView.addObject("allContentList", serverList);
             modelAndView.addObject("successMessage", "No differences found");
         } else {
-            modelAndView.addObject("webContentFromFile", fileList);
-            modelAndView.addObject("allContentList", serverList);
+            modelAndView.addObject("allContentList", joinLists(serverList, fileList));
             modelAndView.addObject("errorMessage", "Your resources are not equal");
         }
     }
@@ -180,9 +145,20 @@ public class TableViewController {
             modelAndView.addObject("mediaList", serverList);
             modelAndView.addObject("successMessage", "No differences found");
         } else {
-            modelAndView.addObject("mediaList", serverList);
-            modelAndView.addObject("mediaListFromFile", fileList);
+            modelAndView.addObject("mediaList", joinLists(serverList, fileList));
             modelAndView.addObject("errorMessage", "Your resources are not equal");
         }
+
     }
+
+    private List<Content> joinLists(List<? extends Content> firstList, List<? extends Content> secondList) {
+        ArrayList<Content> elementsFromFirst = new ArrayList<>(CollectionUtils.subtract(firstList, secondList));
+        ArrayList<Content> elementsFromSecond = new ArrayList<>(CollectionUtils.subtract(secondList, firstList));
+        /*secondList.retainAll(firstList);*/
+//        return Stream.concat(firstList.stream(), secondList.stream()).sorted().collect(Collectors.toList());
+        /*  return Stream.concat(firstList.stream(), secondList.stream()).distinct().sorted().collect(Collectors.toList());*/
+        return Stream.concat(elementsFromFirst.stream(), elementsFromSecond.stream()).sorted().collect(Collectors.toList());
+    }
+
+
 }
