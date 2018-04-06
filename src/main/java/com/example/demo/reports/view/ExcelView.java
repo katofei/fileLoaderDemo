@@ -149,7 +149,7 @@ public class ExcelView extends AbstractXlsView {
                     Cell cell = mediaFileRow.createCell(4);
                     cell.setCellValue(content.getModifiedWhen());
                     cell.setCellStyle(dateStyle);
-                    mediaFileRow.createCell(7).setCellValue(content.getModifiedBy());
+                    mediaFileRow.createCell(5).setCellValue(content.getModifiedBy());
                 }
             }
         }
