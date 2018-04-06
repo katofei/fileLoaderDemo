@@ -154,9 +154,6 @@ public class TableViewController {
     private List<Content> joinLists(List<? extends Content> firstList, List<? extends Content> secondList) {
         ArrayList<Content> elementsFromFirst = new ArrayList<>(CollectionUtils.subtract(firstList, secondList));
         ArrayList<Content> elementsFromSecond = new ArrayList<>(CollectionUtils.subtract(secondList, firstList));
-        /*secondList.retainAll(firstList);*/
-//        return Stream.concat(firstList.stream(), secondList.stream()).sorted().collect(Collectors.toList());
-        /*  return Stream.concat(firstList.stream(), secondList.stream()).distinct().sorted().collect(Collectors.toList());*/
         return Stream.concat(elementsFromFirst.stream(), elementsFromSecond.stream()).sorted().collect(Collectors.toList());
     }
 

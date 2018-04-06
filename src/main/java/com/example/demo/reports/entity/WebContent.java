@@ -26,6 +26,8 @@ public class WebContent extends Content implements Comparable<WebContent>, Compa
     private String folder;
     @ExcelField(position = 5)
     private Date modifiedWhen;
+    @ExcelField(position = 6)
+    private String modifiedBy;
 
     public boolean checkForNull() {
       return   super.checkForNull();

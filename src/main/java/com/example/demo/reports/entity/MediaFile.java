@@ -31,6 +31,8 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
     private String extension;
     @ExcelField(position = 7)
     private String mimeType;
+    @ExcelField(position = 8)
+    private String modifiedBy;
 
     @Override
     public boolean checkForNull() {
@@ -49,12 +51,13 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
                 Objects.equals(folder, mediaFile.folder) &&
                 Objects.equals(modifiedWhen, mediaFile.modifiedWhen) &&
                 Objects.equals(extension, mediaFile.extension) &&
-                Objects.equals(mimeType, mediaFile.mimeType);
+                Objects.equals(mimeType, mediaFile.mimeType)&&
+                Objects.equals(modifiedBy, mediaFile.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, version, size, folder, modifiedWhen, extension, mimeType);
+        return Objects.hash(super.hashCode(), name, version, size, folder, modifiedWhen, extension, mimeType, modifiedBy);
     }
 
     @Override

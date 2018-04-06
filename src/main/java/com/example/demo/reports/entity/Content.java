@@ -3,7 +3,6 @@ package com.example.demo.reports.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,9 +15,10 @@ public abstract class Content {
     private Long size;
     private String folder;
     private Date modifiedWhen;
+    private String modifiedBy;
 
     public boolean checkForNull() {
-        return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null && getVersion() == null);
+        return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null && getVersion() == null && modifiedBy== null);
     }
 
     @Override
@@ -30,11 +30,12 @@ public abstract class Content {
                 Objects.equals(version, content.version) &&
                 Objects.equals(size, content.size) &&
                 Objects.equals(folder, content.folder) &&
-                Objects.equals(modifiedWhen, content.modifiedWhen);
+                Objects.equals(modifiedWhen, content.modifiedWhen) &&
+                Objects.equals(modifiedBy, content.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, version, size, folder, modifiedWhen);
+        return Objects.hash(name, version, size, folder, modifiedWhen, modifiedBy);
     }
 }

@@ -15,6 +15,7 @@ public class WebContentRowMapper implements  RowMapper<WebContent> {
         content.setVersion(resultSet.getDouble("version"));
         content.setFolder(resultSet.getString("folder"));
         content.setModifiedWhen(resultSet.getTimestamp("modifieddate"));
+        content.setModifiedBy(resultSet.getString("modified_by"));
         content.setSize(resultSet.getLong("size_"));
         return content;
     }
