@@ -35,10 +35,10 @@ public class ExcelView extends AbstractXlsView {
 
     private CellStyle createDateStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
-        Font font = workbook.createFont();
+        /*Font font = workbook.createFont();
         font.setBold(false);
         font.setColor(HSSFColor.BLACK.index);
-        style.setFont(font);
+        style.setFont(font);*/
         CreationHelper createHelper = workbook.getCreationHelper();
         style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
         return style;
@@ -57,6 +57,9 @@ public class ExcelView extends AbstractXlsView {
         header.getCell(3).setCellStyle(style);
         header.createCell(4).setCellValue("Modified when");
         header.getCell(4).setCellStyle(style);
+        header.createCell(5).setCellValue("Modified by");
+        header.getCell(5).setCellStyle(style);
+
     }
 
     private void createMediaHeader(Sheet sheet, CellStyle style) {
@@ -75,6 +78,8 @@ public class ExcelView extends AbstractXlsView {
         header.getCell(5).setCellStyle(style);
         header.createCell(6).setCellValue("Mime type");
         header.getCell(6).setCellStyle(style);
+        header.createCell(7).setCellValue("Modified by");
+        header.getCell(7).setCellStyle(style);
     }
 
     @Override
@@ -113,6 +118,7 @@ public class ExcelView extends AbstractXlsView {
                     cell.setCellStyle(dateStyle);
                     mediaFileRow.createCell(5).setCellValue(file.getExtension());
                     mediaFileRow.createCell(6).setCellValue(file.getMimeType());
+                    mediaFileRow.createCell(7).setCellValue(file.getModifiedBy());
                 }
             }
         } else if ("web content".equals(model.get("xlsType"))) {
@@ -143,6 +149,7 @@ public class ExcelView extends AbstractXlsView {
                     Cell cell = mediaFileRow.createCell(4);
                     cell.setCellValue(content.getModifiedWhen());
                     cell.setCellStyle(dateStyle);
+                    mediaFileRow.createCell(7).setCellValue(content.getModifiedBy());
                 }
             }
         }
