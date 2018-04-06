@@ -35,10 +35,6 @@ public class ExcelView extends AbstractXlsView {
 
     private CellStyle createDateStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
-        /*Font font = workbook.createFont();
-        font.setBold(false);
-        font.setColor(HSSFColor.BLACK.index);
-        style.setFont(font);*/
         CreationHelper createHelper = workbook.getCreationHelper();
         style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
         return style;
