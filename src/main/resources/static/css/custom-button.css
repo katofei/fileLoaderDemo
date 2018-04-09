@@ -1,0 +1,31 @@
+.myButton {
+    position: relative;
+}
+.myButton input {
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+    width:100%;
+    height:100%;
+}
+
+
+.myButton {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 3px 20px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: bold;
+    height: 30px;
+    display: inline-block;
+}
+.myButton:hover {
+    background-color: #6c7ae0;
+    color:white;
+}
+.myButton:active {
+    background: #CCF;
+}
+

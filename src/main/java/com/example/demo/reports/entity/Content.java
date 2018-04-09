@@ -16,6 +16,7 @@ public abstract class Content {
     private String folder;
     private Date modifiedWhen;
     private String modifiedBy;
+    private String resource;
 
     public boolean checkForNull() {
         return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null && getVersion() == null && modifiedBy== null);
@@ -31,11 +32,12 @@ public abstract class Content {
                 Objects.equals(size, content.size) &&
                 Objects.equals(folder, content.folder) &&
                 Objects.equals(modifiedWhen, content.modifiedWhen) &&
-                Objects.equals(modifiedBy, content.modifiedBy);
+                Objects.equals(modifiedBy, content.modifiedBy)&&
+                Objects.equals(resource, content.resource);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, version, size, folder, modifiedWhen, modifiedBy);
+        return Objects.hash(name, version, size, folder, modifiedWhen, modifiedBy, resource);
     }
 }

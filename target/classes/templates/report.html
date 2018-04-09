@@ -3,165 +3,162 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Report</title>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header-fixed.css}"/>
+    <link rel="stylesheet" th:href="@{/css/custom-button.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/js/vendor/animate/animate.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/js/vendor/select2/select2.min.css}"/>
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/vendor/jquery/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/vendor/bootstrap/js/popper.js}"></script>
+    <script th:src="@{/js/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/vendor/select2/select2.min.js}"></script>
 </head>
 <body>
 
+<div class="header-fixed" id="myHeader">
+    <div class="header-limiter">
+        <table style="height: 100px; width: 80%; margin-left: 150px;background-color:#36304a;">
+            <tbody>
+            <tr>
+                <th>
+                    <button type="button" th:onclick="|window.location.href='/report/view/webContent'|">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <span>View web content</span>
+                    </button>
+                </th>
+                <th>
+                    <button type="button" th:onclick="|window.location.href='/report/download/webContent.xls'|">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <span>Download web content</span>
+                    </button>
+                </th>
+                <th rowspan="2">
+                    <form method="POST" th:action="@{/report/compareSingleFile}" enctype="multipart/form-data">
+                        <div class="myButton">
+                            <input type="file" name="multipartFile"/>
+                            <span>Choose file, please</span>
+                        </div>
+                        <p style="height: 15px;"></p>
+                        <button type="submit">
+                            <span>Compare file with server</span>
+                        </button>
+                    </form>
+                </th>
+                <th rowspan="2">
+                    <form method="POST" th:action="@{/report/compareMultiFile}" enctype="multipart/form-data">
+                        <div class="myButton">
+                            <input type="file" name="multipartFiles"/>
+                            <span>Choose file_1</span>
+                        </div>
+                        <div class="myButton">
+                            <input type="file" name="multipartFiles"/>
+                            <span>Choose file_2</span>
+                        </div>
+                        <p style="height: 15px;"></p>
+                        <button type="submit"><span>Compare files</span>
+                        </button>
+                    </form>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <button type="button" th:onclick="|window.location.href='/report/view/mediaFiles'|">
+                        <span>View media files</span>
+                    </button>
+                </th>
+                <th>
+                    <button type="button" th:onclick="|window.location.href='/report/download/mediaFiles.xls'|">
+                        <span>Download media files</span>
+                    </button>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table style="height: 100px; width: 90%;">
-    <tbody>
-    <tr>
-        <td>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F0FFF0; height: 35px"
-                    th:onclick="|window.location.href='/report/view/webContent'|">
-                <span class="glyphicon glyphicon-info-sign"></span>
-                <span>View web content</span>
-            </button>
-        </td>
-        <td>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F8F8FF; height: 35px"
-                    th:onclick="|window.location.href='/report/download/webContent.xls'|">
-                <span class="glyphicon glyphicon-info-sign"></span>
-                <span>Download web content</span>
-            </button>
-        </td>
-        <td rowspan="2">
-            <form method="POST" th:action="@{/report/loadSingleFile}" enctype="multipart/form-data">
-                <input type="submit" placeholder="Upload"
-                       style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
-                <input type="file" name="multipartFile"/>
-            </form>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px"
-                    th:onclick="|window.location.href='/report/compare/withServer'|">
-                <span>Compare file with server</span>
-            </button>
-        </td>
-        <td rowspan="2">
-            <form method="POST" th:action="@{/report/loadMultiFiles}" enctype="multipart/form-data">
-                <input type="submit" placeholder="Upload"
-                       style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"/>
-                <input type="file" name="multipartFiles"/>
-                <input type="file" name="multipartFiles"/>
-            </form>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"
-                    th:onclick="|window.location.href='/report/compare/files'|">
-                <span>Compare files</span>
-            </button>
-        </td>
-
-    </tr>
-    <tr>
-        <td>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F0FFF0; height: 35px"
-                    th:onclick="|window.location.href='/report/view/mediaFiles'|">
-                <span class="glyphicon glyphicon-info-sign"></span>
-                <span>View media files</span>
-            </button>
-        </td>
-        <td>
-            <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #F8F8FF; height: 35px"
-                    th:onclick="|window.location.href='/report/download/mediaFiles.xls'|">
-                <span class="glyphicon glyphicon-info-sign"></span>
-                <span>Download media files</span>
-            </button>
-        </td>
-        <!--       <td>
-                   <form method="POST" th:action="@{/report/loadSingleFile}" enctype="multipart/form-data">
-                       <input type="submit" placeholder="Upload"
-                               style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6; height: 30px"/>
-                       <input type="file" name="multipartFile"/>
-                   </form>
-                   <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FDF5E6;height: 30px"
-                           th:onclick="|window.location.href='/report/compare/mediaWithServer'|">
-                       <span>Compare file with server</span>
-                   </button>
-               </td>
-               <td>
-                   <form method="POST" th:action="@{/report/loadMultiFiles}" enctype="multipart/form-data">
-                       <input type="submit" placeholder="Upload" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"/>
-                       <input type="file" name="multipartFiles"/>
-                       <input type="file" name="multipartFiles"/>
-                   </form>
-                   <button type="button" style="border-radius: 8px; font-size: 16px; background-color: #FFE4E1; height: 30px"
-                           th:onclick="|window.location.href='/report/compare/mediaFiles'|">
-                       <span>Compare files</span>
-                   </button>
-               </td>-->
-    </tr>
-
-    </tbody>
-</table>
-
-<p th:text="${errorMessage}"
-   style="color:#FA5858; text-align: center; font-weight: bold; font-family: Arial, sans-serif"></p>
 <p th:text="${successMessage}"
    style="color:#3CB371; text-align: center; font-weight: bold; font-family: Arial, sans-serif"></p>
 
-<table>
-    <thead style="width:90%; font-weight: bold; font-family: 'Times New Roman',sans-serif; text-align: center; background-color: #A9A9A9;">
-    <tr style="border: 1px solid black;">
-        <td style="width: 18%;border: 1px solid black;">Title</td>
-        <td style="width: 18%;border: 1px solid black;">Version</td>
-        <td style="width: 18%;border: 1px solid black;">Size</td>
-        <td style="width: 18%;border: 1px solid black;">Folder</td>
-        <td style="width: 18%;border: 1px solid black;">Modified when</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="content:${allContentList}"
-        style="align-content: left; font-family: 'Times New Roman',serif; font-weight: normal; background-color: #DCDCDC">
-        <th th:text="${content.name}"
-            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
-        <th th:text="${content.version}"
-            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
-        <th th:text="${content.size}"
-            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
-        <th th:text="${content.folder}"
-            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
-        <th th:text="${content.modifiedWhen}"
-            style="width: 18%; border: 1px solid black;font-weight: normal; align-content: left;"></th>
-    </tr>
-    </tbody>
-</table>
+<p th:text="${errorMessage}"
+   style="color:#FA5858; text-align: center; font-weight: bold; font-family: Arial, sans-serif"></p>
 
-<table>
-    <thead style="width:90%; font-weight: bold; font-family: 'Times New Roman',sans-serif; text-align: center; background-color:#A9A9A9;">
-    <tr style="border: 1px solid black;">
-        <td style="width: 15%; border: 1px solid black;">Title</td>
-        <td style="width: 15%; border: 1px solid black;">Version</td>
-        <td style="width: 15%; border: 1px solid black;">Size</td>
-        <td style="width: 15%; border: 1px solid black;">Folder</td>
-        <td style="width: 15%; border: 1px solid black;">Modified when</td>
-        <td style="width: 15%; border: 1px solid black;">Extension</td>
-        <td style="width: 15%; border: 1px solid black;">Mime type</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="mediaFile:${mediaList}" th:each="mediaFromFile:${mediaListFromFile}"
-        style="font-family: 'Times New Roman',serif; background-color: #DCDCDC">
-        <th th:if="${mediaFile.name}eq${mediaFromFile.name}"
-            th:text="${mediaFile.name}+' | '+${mediaFromFile.name}"
-            style="width:15%; border: 1px solid black; font-weight: normal; align-content: left;"></th>
-        <th th:if="${mediaFile.version}eq${mediaFromFile.version}"
-            th:text="${mediaFile.version}+' | '+${mediaFromFile.version}"
-            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:if="${mediaFile.size}eq${mediaFromFile.size}"
-            th:text="${mediaFile.size}+' | '+${mediaFromFile.size}"
-            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:if="${mediaFile.folder}eq${mediaFromFile.folder}"
-            th:text="${mediaFile.folder}+' | '+${mediaFromFile.folder}"
-            style="width:15%; border: 1px solid black;font-weight: normal;"></th>
-        <th th:if="${mediaFile.modifiedWhen}eq${mediaFromFile.modifiedWhen}"
-            th:text="${mediaFile.modifiedWhen}+' | '+${mediaFromFile.modifiedWhen}"
-            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:if="${mediaFile.extension}eq${mediaFromFile.extension}"
-            th:text="${mediaFile.extension}+' | '+${mediaFromFile.extension}"
-            style="width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-        <th th:if="${mediaFile.mimeType}eq${mediaFromFile.mimeType}"
-            th:text="${mediaFile.mimeType}+' | '+${mediaFromFile.mimeType}"
-            style=" width:15%; border: 1px solid black;font-weight: normal;align-content: left;"></th>
-    </tr>
-    </tbody>
-</table>
 
+<div class="container-table100">
+    <div class="wrap-table100">
+        <div class="table100 ver1 m-b-110">
+            <table data-vertable="ver1">
+                <thead>
+                <tr class="row100 head">
+                    <th class="column100 column1">Title</th>
+                    <th class="column100 column2">Version</th>
+                    <th class="column100 column3">Size</th>
+                    <th class="column100 column4">Folder</th>
+                    <th class="column100 column5">Modified when</th>
+                    <th class="column100 column6">Resource</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="content,iterStat:${allContentList}" class="row100">
+                    <td class="column100 column1" th:text="${content.name}"></td>
+                    <td class="column100 column2" th:text="${content.version}"></td>
+                    <td class="column100 column3" th:text="${content.size}"></td>
+                    <td class="column100 column4" th:text="${content.folder}"></td>
+                    <td class="column100 column5" th:text="${content.modifiedWhen}"></td>
+                    <td class="column100 column6" th:text="${content.resource}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container-table200">
+    <div class="wrap-table100">
+        <div class="table100 ver1 m-b-110">
+            <table data-vertable="ver1">
+                <thead>
+                <tr class="row100 head">
+                    <th class="column100 column1">Title</th>
+                    <th class="column100 column2">Version</th>
+                    <th class="column100 column3">Size</th>
+                    <th class="column100 column4">Folder</th>
+                    <th class="column100 column5">Modified when</th>
+                    <th class="column100 column6">Extension</th>
+                    <th class="column100 column7">Mime type</th>
+                    <th class="column100 column8">Resource</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="mediaFile:${mediaList}" class="row100">
+                    <td class="column100 column1" th:text="${mediaFile.name}"></td>
+                    <td class="column100 column2" th:text="${mediaFile.version}"></td>
+                    <td class="column100 column3" th:text="${mediaFile.size}"></td>
+                    <td class="column100 column4" th:text="${mediaFile.folder}"></td>
+                    <td class="column100 column5" th:text="${mediaFile.modifiedWhen}"></td>
+                    <td class="column100 column6" th:text="${mediaFile.extension}"></td>
+                    <td class="column100 column7" th:text="${mediaFile.mimeType}"></td>
+                    <td class="column100 column8" th:text="${mediaFile.resource}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+window.onscroll = function() {myFunction()};
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+function myFunction() {
+  if (window.pageYOffset >= 1) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>
 </body>
 </html>

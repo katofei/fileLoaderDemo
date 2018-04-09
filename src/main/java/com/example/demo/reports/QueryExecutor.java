@@ -35,6 +35,7 @@ public class QueryExecutor implements QueryReader {
             int i = 0;
             while (rs.next()){
                 WebContent content = mapper.mapRow(rs, i++);
+                content.setResource("server");
                 contentList.add(content);
             }
         } catch (SQLException e) {
@@ -56,6 +57,7 @@ public class QueryExecutor implements QueryReader {
             int i = 0;
             while (rs.next()){
                 MediaFile mediaFile = mapper.mapRow(rs, i++);
+                mediaFile.setResource("server");
                 mediaFileList.add(mediaFile);
             }
         } catch (SQLException e) {

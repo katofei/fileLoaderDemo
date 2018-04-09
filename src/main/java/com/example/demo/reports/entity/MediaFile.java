@@ -14,7 +14,6 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @ExcelObject(parseType = ParseType.ROW, start = 2, end = 500)
-@EqualsAndHashCode(callSuper = false)
 public class MediaFile extends Content implements Comparable<MediaFile>, Comparator<MediaFile> {
 
     @ExcelField(position = 1)
@@ -34,6 +33,8 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
     @ExcelField(position = 8)
     private String modifiedBy;
 
+    private String resource;
+
     @Override
     public boolean checkForNull() {
         return (getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null && getMimeType() == null);
@@ -52,12 +53,13 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
                 Objects.equals(modifiedWhen, mediaFile.modifiedWhen) &&
                 Objects.equals(extension, mediaFile.extension) &&
                 Objects.equals(mimeType, mediaFile.mimeType)&&
-                Objects.equals(modifiedBy, mediaFile.modifiedBy);
+                Objects.equals(modifiedBy, mediaFile.modifiedBy)&&
+                Objects.equals(resource, mediaFile.resource);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, version, size, folder, modifiedWhen, extension, mimeType, modifiedBy);
+        return Objects.hash(super.hashCode(), name, version, size, folder, modifiedWhen, extension, mimeType, modifiedBy, resource);
     }
 
     @Override
