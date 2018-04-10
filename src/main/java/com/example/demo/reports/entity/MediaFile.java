@@ -53,13 +53,12 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
                 Objects.equals(modifiedWhen, mediaFile.modifiedWhen) &&
                 Objects.equals(extension, mediaFile.extension) &&
                 Objects.equals(mimeType, mediaFile.mimeType)&&
-                Objects.equals(modifiedBy, mediaFile.modifiedBy)&&
-                Objects.equals(resource, mediaFile.resource);
+                Objects.equals(modifiedBy, mediaFile.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, version, size, folder, modifiedWhen, extension, mimeType, modifiedBy, resource);
+        return Objects.hash(super.hashCode(), name, version, size, folder, modifiedWhen, extension, mimeType, modifiedBy);
     }
 
     @Override

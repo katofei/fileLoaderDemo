@@ -32,12 +32,11 @@ public abstract class Content {
                 Objects.equals(size, content.size) &&
                 Objects.equals(folder, content.folder) &&
                 Objects.equals(modifiedWhen, content.modifiedWhen) &&
-                Objects.equals(modifiedBy, content.modifiedBy)&&
-                Objects.equals(resource, content.resource);
+                Objects.equals(modifiedBy, content.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, version, size, folder, modifiedWhen, modifiedBy, resource);
+        return Objects.hash(name, version, size, folder, modifiedWhen, modifiedBy);
     }
 }
