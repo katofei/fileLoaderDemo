@@ -27,7 +27,9 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +45,7 @@ public class TableViewController {
     private static final String webFilePrefix = "web-content-details";
 
     @Autowired
-    public TableViewController(QueryExecutor queryExecutor,WebContentFileParser contentFileParser,
+    public TableViewController(QueryExecutor queryExecutor, WebContentFileParser contentFileParser,
                                MediaFileParser mediaFileParser) {
         this.queryExecutor = queryExecutor;
         this.contentFileParser = contentFileParser;
@@ -111,28 +113,35 @@ public class TableViewController {
 
 
     @GetMapping(value = "/report/compareSingleFile")
-    public ModelAndView compareFileWithServer(HttpSession session) throws SQLException, ParseException {
+    public ModelAndView compareFileWithServer(HttpSession session,  @ModelAttribute("errorMessage") String errorMessage,
+                                              @ModelAttribute("successMessage") String success) throws SQLException, ParseException {
         log.info("compareFileWithServer started");
         ModelAndView modelAndView = new ModelAndView("report");
-        Object compareWhat = session.getAttribute("compareWhat");
-        @SuppressWarnings("unchecked")
-        List<Content> listFromFile = (List<Content>) compareWhat;
-        if (!listFromFile.isEmpty())
-            if (listFromFile.get(0) instanceof MediaFile) {
-                List<MediaFile> mediaFileListFromServer = queryExecutor.getAllMediaFiles();
-                if (mediaFileListFromServer.isEmpty()) {
-                    modelAndView.addObject("errorMessage", "Error!!\n Media files form server returned empty");
-                } else {
-                    compareMediaFiles(mediaFileListFromServer, listFromFile, modelAndView);
+        if (success != null) {
+            modelAndView.addObject("successMessage", success);
+            Object compareWhat = session.getAttribute("compareWhat");
+            @SuppressWarnings("unchecked")
+            List<Content> listFromFile = (List<Content>) compareWhat;
+            if (!listFromFile.isEmpty())
+                if (listFromFile.get(0) instanceof MediaFile) {
+                    List<MediaFile> mediaFileListFromServer = queryExecutor.getAllMediaFiles();
+                    if (mediaFileListFromServer.isEmpty()) {
+                        modelAndView.addObject("errorMessage", "Error!!\n Media files form server returned empty");
+                    } else {
+                        compareMediaFiles(mediaFileListFromServer, listFromFile, modelAndView);
+                    }
+                } else if (listFromFile.get(0) instanceof WebContent) {
+                    List<WebContent> contentListFromServer = queryExecutor.getAllWebContent();
+                    if (contentListFromServer.isEmpty()) {
+                        modelAndView.addObject("errorMessage", "Error!!\n Web content  form server returned empty");
+                    } else {
+                        compareWebContent(contentListFromServer, listFromFile, modelAndView);
+                    }
                 }
-            } else if (listFromFile.get(0) instanceof WebContent) {
-                List<WebContent> contentListFromServer = queryExecutor.getAllWebContent();
-                if (contentListFromServer.isEmpty()) {
-                    modelAndView.addObject("errorMessage", "Error!!\n Web content  form server returned empty");
-                } else {
-                    compareWebContent(contentListFromServer, listFromFile, modelAndView);
-                }
-            }
+        } else {
+            modelAndView.addObject("errorMessage", errorMessage);
+        }
+
         return modelAndView;
     }
 
@@ -162,8 +171,7 @@ public class TableViewController {
                 request.getSession().setAttribute("compareWith", compareWith);
                 redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
             }
-        }
-        else {
+        } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Files have incompatible types. " +
                     "Please, provide files of tha same format");
         }
@@ -171,21 +179,27 @@ public class TableViewController {
     }
 
     @GetMapping(value = "/report/compareMultiFile")
-    public ModelAndView compareFiles(HttpSession session) throws ParseException {
+    public ModelAndView compareFiles(HttpSession session, @ModelAttribute("errorMessage") String errorMessage,
+                                     @ModelAttribute("successMessage") String success) throws ParseException {
         log.info("compareFiles started");
         ModelAndView modelAndView = new ModelAndView("report");
-        Object compareWhat = session.getAttribute("compareWhat");
-        Object compareWith = session.getAttribute("compareWith");
-        @SuppressWarnings("unchecked")
-        List<Content> listFromFirstFile = (List<Content>) compareWhat;
-        @SuppressWarnings("unchecked")
-        List<Content> listFromSecondFile = (List<Content>) compareWith;
-        if (!(listFromFirstFile.isEmpty()) && !(listFromSecondFile.isEmpty())) {
-            if (listFromFirstFile.get(0) instanceof MediaFile) {
-                compareMediaFiles(listFromFirstFile, listFromSecondFile, modelAndView);
-            } else if (listFromFirstFile.get(0) instanceof WebContent) {
-                compareWebContent(listFromFirstFile, listFromSecondFile, modelAndView);
+        if (success != null) {
+            modelAndView.addObject("successMessage", success);
+            Object compareWhat = session.getAttribute("compareWhat");
+            Object compareWith = session.getAttribute("compareWith");
+            @SuppressWarnings("unchecked")
+            List<Content> listFromFirstFile = (List<Content>) compareWhat;
+            @SuppressWarnings("unchecked")
+            List<Content> listFromSecondFile = (List<Content>) compareWith;
+            if (!(listFromFirstFile.isEmpty()) && !(listFromSecondFile.isEmpty())) {
+                if (listFromFirstFile.get(0) instanceof MediaFile) {
+                    compareMediaFiles(listFromFirstFile, listFromSecondFile, modelAndView);
+                } else if (listFromFirstFile.get(0) instanceof WebContent) {
+                    compareWebContent(listFromFirstFile, listFromSecondFile, modelAndView);
+                }
             }
+        }else {
+            modelAndView.addObject("errorMessage", errorMessage);
         }
         return modelAndView;
     }
@@ -244,7 +258,7 @@ public class TableViewController {
     private List<? extends Content> initializeContentSheet(File file) throws IOException {
         log.info("initializeContentSheet started");
         List<WebContent> webContents = contentFileParser.parse(file.getAbsolutePath());
-        return  trimAndFormatCells(webContents);
+        return trimAndFormatCells(webContents);
     }
 
     private List<? extends Content> instantiateAndReaMediaFile(MultipartFile file, HttpServletRequest request) throws Exception {
