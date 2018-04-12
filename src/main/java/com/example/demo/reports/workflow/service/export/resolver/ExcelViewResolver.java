@@ -1,6 +1,6 @@
-package com.example.demo.reports.view.resolver;
+package com.example.demo.reports.workflow.service.export.resolver;
 
-import com.example.demo.reports.view.ExcelView;
+import com.example.demo.reports.workflow.service.export.ExcelViewComposer;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
@@ -10,7 +10,7 @@ public class ExcelViewResolver implements ViewResolver {
 
     @Override
     public View resolveViewName(String s, Locale locale) {
-        return new ExcelView();
+        return new ExcelViewComposer();
     }
 
 }

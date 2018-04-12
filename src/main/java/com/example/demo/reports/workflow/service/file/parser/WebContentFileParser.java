@@ -1,6 +1,6 @@
-package com.example.demo.reports.file;
+package com.example.demo.reports.workflow.service.file.parser;
 
-import com.example.demo.reports.entity.MediaFile;
+import com.example.demo.reports.workflow.model.WebContent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,12 +16,14 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class MediaFileParser {
-    public List<MediaFile> parse(String fileName) throws IOException {
-        log.info("parse for media started");
-        List<MediaFile> mediaFileList;
+public class WebContentFileParser {
+
+    public List<WebContent> parse(String fileName) throws IOException {
+       log.info("parse for content started");
+        List<WebContent> contentList;
         try {
             FileInputStream fis = new FileInputStream(fileName);
+
             Workbook workbook = null;
             if (fileName.toLowerCase().endsWith("xlsx")) {
                 workbook = new XSSFWorkbook(fis);
@@ -31,15 +33,14 @@ public class MediaFileParser {
 
             Sheet sheet = workbook != null ? workbook.getSheetAt(0) : null;
             SheetParser parser = new SheetParser();
-            List<MediaFile> sectionList = parser.createEntity(sheet, MediaFile.class, error -> {
+            List<WebContent> sectionList = parser.createEntity(sheet, WebContent.class, error -> {
                 throw error;
             });
-            mediaFileList = new ArrayList<>(sectionList);
+            contentList = new ArrayList<>(sectionList);
 
         } catch (IOException e) {
             throw new IOException("Error during parsing file");
         }
-        return mediaFileList;
+        return contentList;
     }
-
 }

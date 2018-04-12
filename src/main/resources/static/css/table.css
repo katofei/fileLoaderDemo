@@ -81,9 +81,6 @@ iframe {
 	border: none !important;
 }
 
-
-
-/*//////////////////////////////////////////////////////////////////
 [ Table ]*/
 
 .limiter {
@@ -155,7 +152,6 @@ th, td {
   padding-bottom: 14px;
 }
 
-
 /*==================================================================
 [ Ver1 ]*/
 .table100.ver1 td {
@@ -189,4 +185,13 @@ th, td {
 .table100.ver1 .row100 td:hover {
   background-color: #6c7ae0;
   color: #fff;
+}
+
+.customCaption{
+height: 40px;
+font-size: 20px;
+text-align: left;
+color: white;
+padding: 10px;
+background: #36304a;
 }

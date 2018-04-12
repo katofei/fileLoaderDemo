@@ -1,4 +1,4 @@
-package com.example.demo.reports;
+package com.example.demo.reports.workflow.service.query;
 
 import java.io.IOException;
 import java.nio.file.Files;

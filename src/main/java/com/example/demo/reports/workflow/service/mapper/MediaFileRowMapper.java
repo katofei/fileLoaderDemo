@@ -1,16 +1,20 @@
-package com.example.demo.reports.entity.mapper;
+package com.example.demo.reports.workflow.service.mapper;
 
-import com.example.demo.reports.entity.MediaFile;
+import com.example.demo.reports.workflow.model.MediaFile;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Service
 public class MediaFileRowMapper implements RowMapper<MediaFile>{
+
 
     @Override
     public MediaFile mapRow(ResultSet resultSet, int i) throws SQLException {
         MediaFile mediaFile = new MediaFile();
+        mediaFile.setId(resultSet.getInt("fileentryid"));
         mediaFile.setName(resultSet.getString("title"));
         mediaFile.setFolder(resultSet.getString("folder"));
         mediaFile.setVersion(resultSet.getDouble("version"));
@@ -19,7 +23,7 @@ public class MediaFileRowMapper implements RowMapper<MediaFile>{
         mediaFile.setModifiedWhen(resultSet.getTimestamp("modifieddate"));
         mediaFile.setModifiedBy(resultSet.getString("modified_by"));
         mediaFile.setMimeType(resultSet.getString("mimetype"));
-       return mediaFile;
+        return mediaFile;
     }
 }
 

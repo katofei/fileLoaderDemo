@@ -1,7 +1,7 @@
-package com.example.demo.reports.view;
+package com.example.demo.reports.workflow.service.export;
 
-import com.example.demo.reports.entity.Content;
-import com.example.demo.reports.entity.MediaFile;
+import com.example.demo.reports.workflow.model.MediaFile;
+import com.example.demo.reports.workflow.model.WebContent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class ExcelView extends AbstractXlsView {
+public class ExcelViewComposer extends AbstractXlsView {
 
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
 
@@ -32,7 +32,6 @@ public class ExcelView extends AbstractXlsView {
         return style;
     }
 
-
     private CellStyle createDateStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         CreationHelper createHelper = workbook.getCreationHelper();
@@ -40,42 +39,45 @@ public class ExcelView extends AbstractXlsView {
         return style;
     }
 
-
     private void createWebContentHeader(Sheet sheet, CellStyle style) {
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("Title");
+        header.createCell(0).setCellValue("Id");
         header.getCell(0).setCellStyle(style);
-        header.createCell(1).setCellValue("Version");
+        header.createCell(1).setCellValue("Title");
         header.getCell(1).setCellStyle(style);
-        header.createCell(2).setCellValue("Size");
+        header.createCell(2).setCellValue("Version");
         header.getCell(2).setCellStyle(style);
-        header.createCell(3).setCellValue("Folder");
+        header.createCell(3).setCellValue("Size");
         header.getCell(3).setCellStyle(style);
-        header.createCell(4).setCellValue("Modified when");
+        header.createCell(4).setCellValue("Folder");
         header.getCell(4).setCellStyle(style);
-        header.createCell(5).setCellValue("Modified by");
+        header.createCell(5).setCellValue("Modified when");
         header.getCell(5).setCellStyle(style);
+        header.createCell(6).setCellValue("Modified by");
+        header.getCell(6).setCellStyle(style);
 
     }
 
     private void createMediaHeader(Sheet sheet, CellStyle style) {
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("Title");
+        header.createCell(0).setCellValue("Id");
         header.getCell(0).setCellStyle(style);
-        header.createCell(1).setCellValue("Version");
+        header.createCell(1).setCellValue("Title");
         header.getCell(1).setCellStyle(style);
-        header.createCell(2).setCellValue("Size");
+        header.createCell(2).setCellValue("Version");
         header.getCell(2).setCellStyle(style);
-        header.createCell(3).setCellValue("Folder");
+        header.createCell(3).setCellValue("Size");
         header.getCell(3).setCellStyle(style);
-        header.createCell(4).setCellValue("Modified when");
+        header.createCell(4).setCellValue("Folder");
         header.getCell(4).setCellStyle(style);
-        header.createCell(5).setCellValue("Extension");
+        header.createCell(5).setCellValue("Modified when");
         header.getCell(5).setCellStyle(style);
-        header.createCell(6).setCellValue("Mime type");
+        header.createCell(6).setCellValue("Extension");
         header.getCell(6).setCellStyle(style);
-        header.createCell(7).setCellValue("Modified by");
+        header.createCell(7).setCellValue("Mime type");
         header.getCell(7).setCellStyle(style);
+        header.createCell(8).setCellValue("Modified by");
+        header.getCell(8).setCellStyle(style);
     }
 
     @Override
@@ -105,16 +107,17 @@ public class ExcelView extends AbstractXlsView {
             if (mediaFileList != null) {
                 for (MediaFile file : mediaFileList) {
                     mediaFileRow = sheet.createRow(rowCount++);
-                    mediaFileRow.createCell(0).setCellValue(file.getName());
-                    mediaFileRow.createCell(1).setCellValue(file.getVersion());
-                    mediaFileRow.createCell(2).setCellValue(file.getSize());
-                    mediaFileRow.createCell(3).setCellValue(file.getFolder());
-                    Cell cell = mediaFileRow.createCell(4);
+                    mediaFileRow.createCell(0).setCellValue(file.getId());
+                    mediaFileRow.createCell(1).setCellValue(file.getName());
+                    mediaFileRow.createCell(2).setCellValue(file.getVersion());
+                    mediaFileRow.createCell(3).setCellValue(file.getSize());
+                    mediaFileRow.createCell(4).setCellValue(file.getFolder());
+                    Cell cell = mediaFileRow.createCell(5);
                     cell.setCellValue(file.getModifiedWhen());
                     cell.setCellStyle(dateStyle);
-                    mediaFileRow.createCell(5).setCellValue(file.getExtension());
-                    mediaFileRow.createCell(6).setCellValue(file.getMimeType());
-                    mediaFileRow.createCell(7).setCellValue(file.getModifiedBy());
+                    mediaFileRow.createCell(6).setCellValue(file.getExtension());
+                    mediaFileRow.createCell(7).setCellValue(file.getMimeType());
+                    mediaFileRow.createCell(8).setCellValue(file.getModifiedBy());
                 }
             }
         } else if ("web content".equals(model.get("xlsType"))) {
@@ -124,7 +127,7 @@ public class ExcelView extends AbstractXlsView {
                     dateFormat.format(today) + ".xls");
 
             @SuppressWarnings("unchecked")
-            List<Content> contentList = (List<Content>) model.get("contentList");
+            List<WebContent> contentList = (List<WebContent>) model.get("contentList");
 
             Sheet sheet = workbook.createSheet("Web content");
             sheet.setDefaultColumnWidth(20);
@@ -136,16 +139,17 @@ public class ExcelView extends AbstractXlsView {
             int rowCount = 1;
             Row mediaFileRow;
             if (contentList != null) {
-                for (Content content : contentList) {
+                for (WebContent content : contentList) {
                     mediaFileRow = sheet.createRow(rowCount++);
-                    mediaFileRow.createCell(0).setCellValue(content.getName());
-                    mediaFileRow.createCell(1).setCellValue(content.getVersion());
-                    mediaFileRow.createCell(2).setCellValue(content.getSize());
-                    mediaFileRow.createCell(3).setCellValue(content.getFolder());
-                    Cell cell = mediaFileRow.createCell(4);
+                    mediaFileRow.createCell(0).setCellValue(content.getId());
+                    mediaFileRow.createCell(1).setCellValue(content.getName());
+                    mediaFileRow.createCell(2).setCellValue(content.getVersion());
+                    mediaFileRow.createCell(3).setCellValue(content.getSize());
+                    mediaFileRow.createCell(4).setCellValue(content.getFolder());
+                    Cell cell = mediaFileRow.createCell(5);
                     cell.setCellValue(content.getModifiedWhen());
                     cell.setCellStyle(dateStyle);
-                    mediaFileRow.createCell(5).setCellValue(content.getModifiedBy());
+                    mediaFileRow.createCell(6).setCellValue(content.getModifiedBy());
                 }
             }
         }
