@@ -251,7 +251,6 @@ public class TableViewController {
         List<Content> mergedElements = new ArrayList<>();
         for (Content fromFirstList : elementsFromFirst) {
             for (Content fromSecondList : elementsFromSecond) {
-
                 if (fromFirstList.getId().equals(fromSecondList.getId()) && !(fromFirstList.equals(secondList))) {
                     mergedElements.add(fromFirstList);
                     mergedElements.add(fromSecondList);
