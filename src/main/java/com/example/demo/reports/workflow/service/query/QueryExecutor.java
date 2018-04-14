@@ -35,7 +35,7 @@ public class QueryExecutor implements QueryReader {
 
     public List<WebContent> getAllWebContent() throws SQLException {
         log.info("getAllWebContent started");
-        List<WebContent> contentResultList = new ArrayList<>();
+        List<WebContent> contentResultList;
         String query = readQueryFromFile(FILE_PATH_TO_CONTENT_SCRIPT);
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             contentResultList = getContentResultSet(connection, query);

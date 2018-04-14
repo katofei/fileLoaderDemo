@@ -68,7 +68,7 @@ public class WebContent extends Content implements Comparable<WebContent>, Compa
 
     @Override
     public final int compareTo(WebContent webContent) {
-        return this.folder.compareTo(webContent.folder);
+        return this.name.compareTo(webContent.name);
     }
 
     @Override
