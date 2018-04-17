@@ -71,7 +71,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter implements Application
 
     @Bean
     @Description("View resolvers registration")
-    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
+    public List<ViewResolver> contentNegotiatingViewResolver(ContentNegotiationManager manager) {
         ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
         resolver.setContentNegotiationManager(manager);
 
@@ -84,7 +84,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter implements Application
         resolvers.add(excelViewResolver());
 
         resolver.setViewResolvers(resolvers);
-        return mainResolver;
+        return resolvers;
     }
 
     @Bean

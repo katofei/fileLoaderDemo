@@ -38,6 +38,11 @@ public class QueryExecutor implements QueryReader {
         log.info("getAllWebContent started");
         List<WebContent> contentResultList;
         String query = readQueryFromFile(FILE_PATH_TO_CONTENT_SCRIPT);
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             contentResultList = getContentResultSet(connection, query);
         } catch (SQLException e) {
@@ -69,6 +74,11 @@ public class QueryExecutor implements QueryReader {
         log.info("getAllMediaFiles started");
         List<MediaFile> mediaFileResultList;
         String query = readQueryFromFile(FILE_PATH_TO_MEDIA_SCRIPT);
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             mediaFileResultList = getMediaResultSet(connection, query);
         } catch (SQLException e) {
