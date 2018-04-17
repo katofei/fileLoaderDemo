@@ -6,7 +6,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.MediaType;
@@ -18,17 +17,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-/*@EnableWebMvc*/
-@ComponentScan("com.netcracker.cloud.report.workflow")
+@EnableWebMvc
 public class WebMVCConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -37,7 +36,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter implements Application
         this.applicationContext = applicationContext;
     }
 
-    /*@Bean
+    @Bean
     @Description("Thymeleaf View Resolver")
     public ViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
@@ -62,7 +61,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter implements Application
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML5");
         return resolver;
-    }*/
+    }
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {

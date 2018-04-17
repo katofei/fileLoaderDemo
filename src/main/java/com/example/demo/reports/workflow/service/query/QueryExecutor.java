@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,8 @@ import java.util.List;
 @Service
 public class QueryExecutor implements QueryReader {
 
-    private static final String FILE_PATH_TO_MEDIA_SCRIPT = "src/main/resources/queries/get_media.sql";
-    private static final String FILE_PATH_TO_CONTENT_SCRIPT = "src/main/resources/queries/get_web_content.sql";
+    private static final String FILE_PATH_TO_MEDIA_SCRIPT = "/queries/get_media.sql";
+    private static final String FILE_PATH_TO_CONTENT_SCRIPT = "/queries/get_web_content.sql";
 
     private final MediaFileRowMapper mediaMapper;
     private final WebContentRowMapper webMapper;
@@ -33,7 +34,7 @@ public class QueryExecutor implements QueryReader {
     private static final String password = System.getenv("DB_PASSWORD");
 
 
-    public List<WebContent> getAllWebContent() throws SQLException {
+    public List<WebContent> getAllWebContent() throws SQLException, IOException {
         log.info("getAllWebContent started");
         List<WebContent> contentResultList;
         String query = readQueryFromFile(FILE_PATH_TO_CONTENT_SCRIPT);
@@ -64,7 +65,7 @@ public class QueryExecutor implements QueryReader {
     }
 
 
-    public List<MediaFile> getAllMediaFiles() throws SQLException {
+    public List<MediaFile> getAllMediaFiles() throws SQLException, IOException {
         log.info("getAllMediaFiles started");
         List<MediaFile> mediaFileResultList;
         String query = readQueryFromFile(FILE_PATH_TO_MEDIA_SCRIPT);

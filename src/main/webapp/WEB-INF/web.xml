@@ -12,14 +12,14 @@
         </servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/report-context.xml</param-value>
+            <param-value>/WEB-INF/applicationContext.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/report</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <listener>

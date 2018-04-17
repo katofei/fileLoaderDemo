@@ -67,7 +67,7 @@ public class TableViewController {
     }
 
     @GetMapping(value = "/report/view/webContent")
-    public ModelAndView viewCurrentWebContent() throws SQLException {
+    public ModelAndView viewCurrentWebContent() throws SQLException, IOException {
         log.info("viewCurrentWebContent started");
         ModelAndView modelAndView = new ModelAndView("report");
         List<WebContent> allContentList = queryExecutor.getAllWebContent();
@@ -79,7 +79,7 @@ public class TableViewController {
     }
 
     @GetMapping(value = "/report/view/mediaFiles")
-    public ModelAndView viewCurrentMediaFiles() throws SQLException {
+    public ModelAndView viewCurrentMediaFiles() throws SQLException, IOException {
         log.info("viewCurrentMediaFiles started");
         ModelAndView modelAndView = new ModelAndView("report");
         List<MediaFile> allMedia = queryExecutor.getAllMediaFiles();
@@ -117,7 +117,7 @@ public class TableViewController {
 
 
     @GetMapping(value = "/report/compareSingleFile")
-    public ModelAndView compareFileWithServer(ModelMap model) throws SQLException, ParseException {
+    public ModelAndView compareFileWithServer(ModelMap model) throws SQLException, ParseException, IOException {
         log.info("compareFileWithServer started");
         ModelAndView modelAndView = new ModelAndView("report");
         String success = (String) model.get("successMessage");
