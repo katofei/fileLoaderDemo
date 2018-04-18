@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Report</title>
-    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}" type="text/css"/>
     <link rel="stylesheet" th:href="@{/css/header-fixed.css}"/>
     <link rel="stylesheet" th:href="@{/css/custom-button.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/js/vendor/animate/animate.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/js/vendor/select2/select2.min.css}"/>
-    <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/js/vendor/jquery/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/js/vendor/bootstrap/js/popper.js}"></script>
-    <script th:src="@{/js/vendor/bootstrap/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/vendor/select2/select2.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{../static/js/vendor/animate/animate.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{../static/js/vendor/select2/select2.min.css}"/>
+    <script th:src="@{../static/js/main.js}"></script>
+    <script th:src="@{../static/js/vendor/jquery/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{../static/js/vendor/bootstrap/js/popper.js}"></script>
+    <script th:src="@{../static/js/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{../static/js/vendor/select2/select2.min.js}"></script>
 </head>
 <body>
 
@@ -96,7 +96,7 @@
                         <th class="column100 column1">Title</th>
                         <th class="column100 column2">Version</th>
                         <th class="column100 column3">Size</th>
-                        <th class="column100 column4">Folder</th>
+                        <th class="column100 column4">Full path</th>
                         <th class="column100 column5">Modified when</th>
                         <th class="column100 column6">Resource</th>
                     </tr>
@@ -106,7 +106,7 @@
                         <td class="column100 column1" th:text="${content.name}"></td>
                         <td class="column100 column2" th:text="${content.version}"></td>
                         <td class="column100 column3" th:text="${content.size}"></td>
-                        <td class="column100 column4" th:text="${content.folder}"></td>
+                        <td class="column100 column4" th:text="${content.path}"></td>
                         <td class="column100 column5" th:text="${content.modifiedWhen}"></td>
                         <td class="column100 column6" th:text="${content.resource}"></td>
                     </tr>
@@ -128,7 +128,7 @@
                         <th class="column100 column1">Title</th>
                         <th class="column100 column2">Version</th>
                         <th class="column100 column3">Size</th>
-                        <th class="column100 column4">Folder</th>
+                        <th class="column100 column4">Full path</th>
                         <th class="column100 column5">Modified when</th>
                         <th class="column100 column6">Extension</th>
                         <th class="column100 column7">Mime type</th>
@@ -140,7 +140,7 @@
                         <td class="column100 column1" th:text="${mediaFile.name}"></td>
                         <td class="column100 column2" th:text="${mediaFile.version}"></td>
                         <td class="column100 column3" th:text="${mediaFile.size}"></td>
-                        <td class="column100 column4" th:text="${mediaFile.folder}"></td>
+                        <td class="column100 column4" th:text="${mediaFile.path}"></td>
                         <td class="column100 column5" th:text="${mediaFile.modifiedWhen}"></td>
                         <td class="column100 column6" th:text="${mediaFile.extension}"></td>
                         <td class="column100 column7" th:text="${mediaFile.mimeType}"></td>
@@ -158,13 +158,13 @@
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
                 <table data-vertable="ver1">
-                    <caption class="customCaption">Merged Elements</caption>
+                    <caption class="customCaption">Different Elements</caption>
                     <thead>
                     <tr class="row100 head">
                         <th class="column100 column1">Title</th>
                         <th class="column100 column2">Version</th>
                         <th class="column100 column3">Size</th>
-                        <th class="column100 column4">Folder</th>
+                        <th class="column100 column4">Path</th>
                         <th class="column100 column5">Modified when</th>
                         <th class="column100 column6">Resource</th>
                     </tr>
@@ -174,7 +174,7 @@
                         <td class="column100 column1" th:text="${content.name}"></td>
                         <td class="column100 column2" th:text="${content.version}"></td>
                         <td class="column100 column3" th:text="${content.size}"></td>
-                        <td class="column100 column4" th:text="${content.folder}"></td>
+                        <td class="column100 column4" th:text="${content.path}"></td>
                         <td class="column100 column5" th:text="${content.modifiedWhen}"></td>
                         <td class="column100 column6" th:text="${content.resource}"></td>
                     </tr>
@@ -196,7 +196,7 @@
                         <th class="column100 column1">Title</th>
                         <th class="column100 column2">Version</th>
                         <th class="column100 column3">Size</th>
-                        <th class="column100 column4">Folder</th>
+                        <th class="column100 column4">Path</th>
                         <th class="column100 column5">Modified when</th>
                         <th class="column100 column6">Resource</th>
                     </tr>
@@ -206,7 +206,7 @@
                         <td class="column100 column1" th:text="${content.name}"></td>
                         <td class="column100 column2" th:text="${content.version}"></td>
                         <td class="column100 column3" th:text="${content.size}"></td>
-                        <td class="column100 column4" th:text="${content.folder}"></td>
+                        <td class="column100 column4" th:text="${content.path}"></td>
                         <td class="column100 column5" th:text="${content.modifiedWhen}"></td>
                         <td class="column100 column6" th:text="${content.resource}"></td>
                     </tr>

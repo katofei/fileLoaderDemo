@@ -16,7 +16,7 @@ public class MediaFileRowMapper implements RowMapper<MediaFile>{
         MediaFile mediaFile = new MediaFile();
         mediaFile.setId(resultSet.getInt("fileentryid"));
         mediaFile.setName(resultSet.getString("title"));
-        mediaFile.setFolder(resultSet.getString("folder"));
+        mediaFile.setPath(resultSet.getString("full_path"));
         mediaFile.setVersion(resultSet.getDouble("version"));
         mediaFile.setExtension(resultSet.getString("extension"));
         mediaFile.setSize(resultSet.getLong("size_"));

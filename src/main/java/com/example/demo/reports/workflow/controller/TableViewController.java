@@ -269,7 +269,7 @@ public class TableViewController {
         File report = fileHelper.upload(file, request, "xlsReports");
         List<? extends Content> contentFromFileList = initializeContentSheet(report);
         contentFromFileList.forEach(content -> content.setResource(file.getOriginalFilename()));
-        fileHelper.delete(report);
+//        fileHelper.delete(report);
         return contentFromFileList;
     }
 
@@ -284,7 +284,7 @@ public class TableViewController {
         File report = fileHelper.upload(file, request, "xlsReports");
         List<? extends Content> mediaFileList = initializeMediaSheet(report);
         mediaFileList.forEach(media -> media.setResource(file.getOriginalFilename()));
-        fileHelper.delete(report);
+//        fileHelper.delete(report);
         return mediaFileList;
     }
 
@@ -308,8 +308,8 @@ public class TableViewController {
 
     private List<? extends Content> formatCells(List<? extends Content> sourceList) {
         sourceList.forEach(content -> {
-            if ("".equals(content.getFolder())) {
-                content.setFolder(null);
+            if ("".equals(content.getPath())) {
+                content.setPath(null);
             }
             if ("".equals(content.getName())) {
                 content.setName(null);
@@ -317,5 +317,4 @@ public class TableViewController {
         });
         return sourceList;
     }
-
 }

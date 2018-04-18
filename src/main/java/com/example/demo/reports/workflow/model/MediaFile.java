@@ -27,7 +27,7 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
     @ExcelField(position = 4)
     private Long size;
     @ExcelField(position = 5)
-    private String folder;
+    private String path;
     @ExcelField(position = 6)
     private Date modifiedWhen;
     @ExcelField(position = 7)
@@ -41,7 +41,7 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
 
     @Override
     public final boolean checkForNull() {
-        return (getName() == null && getFolder() == null && getModifiedWhen() == null
+        return (getName() == null && getPath() == null && getModifiedWhen() == null
                 && getSize() == null && getMimeType() == null);
     }
 
@@ -54,7 +54,7 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
                 Objects.equals(name, mediaFile.name)&&
                 Objects.equals(version, mediaFile.version) &&
                 Objects.equals(size, mediaFile.size) &&
-                Objects.equals(folder, mediaFile.folder) &&
+                Objects.equals(path, mediaFile.path) &&
                 Objects.equals(mimeType, mediaFile.mimeType) &&
                 Objects.equals(extension, mediaFile.extension) &&
                 Objects.equals(modifiedWhen, mediaFile.modifiedWhen) &&
@@ -63,12 +63,12 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
 
     @Override
     public final int hashCode() {
-        return Objects.hash(id, name, version, size, folder, mimeType, extension, modifiedBy, modifiedWhen);
+        return Objects.hash(id, name, version, size, path, mimeType, extension, modifiedBy, modifiedWhen);
     }
 
     @Override
     public final int compareTo(MediaFile mediaFile) {
-        return this.folder.compareTo(mediaFile.folder);
+        return this.path.compareTo(mediaFile.path);
     }
 
     @Override

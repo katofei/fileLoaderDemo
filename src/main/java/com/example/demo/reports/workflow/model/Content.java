@@ -20,9 +20,9 @@ public abstract class Content {
 
     public abstract void setSize(Long size);
 
-    public abstract String getFolder();
+    public abstract String getPath();
 
-    public abstract void setFolder(String folder) ;
+    public abstract void setPath(String folder) ;
 
     public abstract Date getModifiedWhen() ;
 

@@ -49,7 +49,7 @@ public class ExcelViewComposer extends AbstractXlsView {
         header.getCell(2).setCellStyle(style);
         header.createCell(3).setCellValue("Size");
         header.getCell(3).setCellStyle(style);
-        header.createCell(4).setCellValue("Folder");
+        header.createCell(4).setCellValue("Path");
         header.getCell(4).setCellStyle(style);
         header.createCell(5).setCellValue("Modified when");
         header.getCell(5).setCellStyle(style);
@@ -68,7 +68,7 @@ public class ExcelViewComposer extends AbstractXlsView {
         header.getCell(2).setCellStyle(style);
         header.createCell(3).setCellValue("Size");
         header.getCell(3).setCellStyle(style);
-        header.createCell(4).setCellValue("Folder");
+        header.createCell(4).setCellValue("Path");
         header.getCell(4).setCellStyle(style);
         header.createCell(5).setCellValue("Modified when");
         header.getCell(5).setCellStyle(style);
@@ -111,7 +111,7 @@ public class ExcelViewComposer extends AbstractXlsView {
                     mediaFileRow.createCell(1).setCellValue(file.getName());
                     mediaFileRow.createCell(2).setCellValue(file.getVersion());
                     mediaFileRow.createCell(3).setCellValue(file.getSize());
-                    mediaFileRow.createCell(4).setCellValue(file.getFolder());
+                    mediaFileRow.createCell(4).setCellValue(file.getPath());
                     Cell cell = mediaFileRow.createCell(5);
                     cell.setCellValue(file.getModifiedWhen());
                     cell.setCellStyle(dateStyle);
@@ -145,7 +145,7 @@ public class ExcelViewComposer extends AbstractXlsView {
                     mediaFileRow.createCell(1).setCellValue(content.getName());
                     mediaFileRow.createCell(2).setCellValue(content.getVersion());
                     mediaFileRow.createCell(3).setCellValue(content.getSize());
-                    mediaFileRow.createCell(4).setCellValue(content.getFolder());
+                    mediaFileRow.createCell(4).setCellValue(content.getPath());
                     Cell cell = mediaFileRow.createCell(5);
                     cell.setCellValue(content.getModifiedWhen());
                     cell.setCellStyle(dateStyle);

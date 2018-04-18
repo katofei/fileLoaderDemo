@@ -20,22 +20,16 @@ public class WebContent extends Content implements Comparable<WebContent>, Compa
 
     @ExcelField(position = 1)
     private Integer id;
-
     @ExcelField(position = 2)
     private String name;
-
     @ExcelField(position = 3)
     private Double version;
-
     @ExcelField(position = 4)
     private Long size;
-
     @ExcelField(position = 5)
-    private String folder;
-
+    private String path;
     @ExcelField(position = 6)
     private Date modifiedWhen;
-
     @ExcelField(position = 7)
     private String modifiedBy;
 
@@ -43,7 +37,7 @@ public class WebContent extends Content implements Comparable<WebContent>, Compa
 
     @Override
     public final boolean checkForNull() {
-        return getName() == null && getFolder() == null && getModifiedWhen() == null && getSize() == null
+        return getName() == null && this.getPath() == null && getModifiedWhen() == null && getSize() == null
                 && getVersion() == null && modifiedBy== null;
     }
 
@@ -56,14 +50,14 @@ public class WebContent extends Content implements Comparable<WebContent>, Compa
                 Objects.equals(name, content.name)&&
                 Objects.equals(version, content.version) &&
                 Objects.equals(size, content.size) &&
-                Objects.equals(folder, content.folder) &&
+                Objects.equals(path, content.path) &&
                 Objects.equals(modifiedWhen, content.modifiedWhen) &&
                 Objects.equals(modifiedBy, content.modifiedBy);
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(id, name, version, size, folder, modifiedBy, modifiedWhen);
+        return Objects.hash(id, name, version, size, path, modifiedBy, modifiedWhen);
     }
 
     @Override

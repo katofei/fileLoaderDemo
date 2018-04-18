@@ -23,7 +23,7 @@ public class FileDownloadController {
         log.info("downloadContentInfo started");
         model.addAttribute("contentList", queryExecutor.getAllWebContent());
         model.addAttribute("xlsType", "web content");
-        return "";
+        return "excelViewComposer";
     }
 
     @GetMapping(value = "/report/download/mediaFiles")
@@ -31,7 +31,7 @@ public class FileDownloadController {
         log.info("downloadMediaInfo started");
         model.addAttribute("mediaList", queryExecutor.getAllMediaFiles());
         model.addAttribute("xlsType", "media");
-        return "";
+        return "excelViewComposer";
     }
 
 }

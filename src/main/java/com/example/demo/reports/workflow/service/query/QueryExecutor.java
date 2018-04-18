@@ -36,7 +36,7 @@ public class QueryExecutor implements QueryReader {
 
     public List<WebContent> getAllWebContent() throws SQLException, IOException {
         log.info("getAllWebContent started");
-        List<WebContent> contentResultList;
+        List<WebContent> contentResultList = new ArrayList<>();
         String query = readQueryFromFile(FILE_PATH_TO_CONTENT_SCRIPT);
         try {
             Class.forName("org.postgresql.Driver");
@@ -44,35 +44,25 @@ public class QueryExecutor implements QueryReader {
             e.printStackTrace();
         }
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            contentResultList = getContentResultSet(connection, query);
-        } catch (SQLException e) {
-            log.error("Database connection failed");
-            throw new SQLException("Database connection failed");
-        }
-        return contentResultList;
-    }
-
-    private List<WebContent> getContentResultSet(Connection connection, String query) throws SQLException {
-        List<WebContent> contentList = new ArrayList<>();
-        PreparedStatement pst = connection.prepareStatement(query);
-        try (ResultSet rs = pst.executeQuery()) {
-            int i = 0;
-            while (rs.next()) {
-                WebContent content = webMapper.mapRow(rs, i++);
-                content.setResource("server");
-                contentList.add(content);
+            PreparedStatement pst = connection.prepareStatement(query);
+            try (ResultSet rs = pst.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    WebContent content = webMapper.mapRow(rs, i++);
+                    content.setResource("server");
+                    contentResultList.add(content);
+                }
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+                throw new SQLException(e.getMessage());
             }
-        } catch (SQLException ex) {
-            log.error("PSQL Exception : {}", ex.getMessage());
-            throw new SQLException("PSQL Exception :" + ex.getMessage());
+            return contentResultList;
         }
-        return contentList;
     }
-
 
     public List<MediaFile> getAllMediaFiles() throws SQLException, IOException {
         log.info("getAllMediaFiles started");
-        List<MediaFile> mediaFileResultList;
+        List<MediaFile> mediaFileResultList = new ArrayList<>();
         String query = readQueryFromFile(FILE_PATH_TO_MEDIA_SCRIPT);
         try {
             Class.forName("org.postgresql.Driver");
@@ -80,28 +70,19 @@ public class QueryExecutor implements QueryReader {
             e.printStackTrace();
         }
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            mediaFileResultList = getMediaResultSet(connection, query);
-        } catch (SQLException e) {
-            log.error("Database connection failed");
-            throw new SQLException("Database connection failed");
-        }
-        return mediaFileResultList;
-    }
-
-    private List<MediaFile> getMediaResultSet(Connection connection, String query) throws SQLException {
-        List<MediaFile> mediaList = new ArrayList<>();
-        PreparedStatement pst = connection.prepareStatement(query);
-        try (ResultSet rs = pst.executeQuery()) {
-            int i = 0;
-            while (rs.next()) {
-                MediaFile mediaFile = mediaMapper.mapRow(rs, i++);
-                mediaFile.setResource("server");
-                mediaList.add(mediaFile);
+            PreparedStatement pst = connection.prepareStatement(query);
+            try (ResultSet rs = pst.executeQuery()) {
+                int i = 0;
+                while (rs.next()) {
+                    MediaFile mediaFile = mediaMapper.mapRow(rs, i++);
+                    mediaFile.setResource("server");
+                    mediaFileResultList.add(mediaFile);
+                }
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+                throw new SQLException(e.getMessage());
             }
-        } catch (SQLException ex) {
-            log.error("PSQL Exception : {}", ex.getMessage());
-            throw new SQLException("PSQL Exception :" + ex.getMessage());
+            return mediaFileResultList;
         }
-        return mediaList;
     }
 }
