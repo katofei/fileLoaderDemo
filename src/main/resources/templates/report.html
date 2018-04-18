@@ -14,7 +14,7 @@
     <script th:src="@{../static/js/vendor/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{../static/js/vendor/select2/select2.min.js}"></script>
 </head>
-<body>
+<body style="background-color:#d1d1d1">
 
 <div class="header-fixed" id="myHeader">
     <div class="header-limiter">
@@ -30,7 +30,7 @@
                 <th>
                     <button type="button" th:onclick="|window.location.href='/report/download/webContent.xls'|">
                         <span class="glyphicon glyphicon-info-sign"></span>
-                        <span>Download web content</span>
+                        <span>Download web report</span>
                     </button>
                 </th>
                 <th rowspan="2">
@@ -69,7 +69,7 @@
                 </th>
                 <th>
                     <button type="button" th:onclick="|window.location.href='/report/download/mediaFiles.xls'|">
-                        <span>Download media files</span>
+                        <span>Download media report</span>
                     </button>
                 </th>
             </tr>
@@ -80,44 +80,45 @@
 
 
 <p th:text="${successMessage}"
-   style="color:#3CB371; background-color: #d1d1d1; text-align: center; font-weight: bold; font-family: Arial, sans-serif;"></p>
+   style="color:#3CB371; text-align: center; font-weight: bold; font-family: Arial, sans-serif;"></p>
 
 <p th:text="${errorMessage}"
-   style="color:#FA5858; background-color: #d1d1d1; text-align: center; font-weight: bold; font-family: Arial, sans-serif;"></p>
+   style="color:#FA5858; text-align: center; font-weight: bold; font-family: Arial, sans-serif;"></p>
 
-<div th:if="${allContentList!= null}">
-    <div class="container-table100">
-        <div class="wrap-table100">
-            <div class="table100 ver1 m-b-110">
-                <table data-vertable="ver1">
-                    <caption class="customCaption">Web content</caption>
-                    <thead>
-                    <tr class="row100 head">
-                        <th class="column100 column1">Title</th>
-                        <th class="column100 column2">Version</th>
-                        <th class="column100 column3">Size</th>
-                        <th class="column100 column4">Full path</th>
-                        <th class="column100 column5">Modified when</th>
-                        <th class="column100 column6">Resource</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="content,iterStat:${allContentList}" class="row100">
-                        <td class="column100 column1" th:text="${content.name}"></td>
-                        <td class="column100 column2" th:text="${content.version}"></td>
-                        <td class="column100 column3" th:text="${content.size}"></td>
-                        <td class="column100 column4" th:text="${content.path}"></td>
-                        <td class="column100 column5" th:text="${content.modifiedWhen}"></td>
-                        <td class="column100 column6" th:text="${content.resource}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+
+<div th:if="${allContentList!= null and !allContentList.empty}">
+<div class="container-table100">
+    <div class="wrap-table100">
+        <div class="table100 ver1 m-b-110">
+            <table data-vertable="ver1">
+                <caption class="customCaption">Web content</caption>
+                <thead>
+                <tr class="row100 head">
+                    <th class="column100 column1">Title</th>
+                    <th class="column100 column2">Version</th>
+                    <th class="column100 column3">Size</th>
+                    <th class="column100 column4">Full path</th>
+                    <th class="column100 column5">Modified when</th>
+                    <th class="column100 column6">Resource</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="content,iterStat:${allContentList}" class="row100">
+                    <td class="column100 column1" th:text="${content.name}"></td>
+                    <td class="column100 column2" th:text="${content.version}"></td>
+                    <td class="column100 column3" th:text="${content.size}"></td>
+                    <td class="column100 column4" th:text="${content.path}"></td>
+                    <td class="column100 column5" th:text="${content.modifiedWhen}"></td>
+                    <td class="column100 column6" th:text="${content.resource}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+</div>
 
-<div th:if="${mediaList != null}">
+<div th:if="${mediaList != null and !mediaList.empty}">
     <div class="container-table200">
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
@@ -153,7 +154,7 @@
     </div>
 </div>
 
-<div th:if="${mergedElements!= null}">
+<div th:if="${mergedElements!= null and !mergedElements.empty}">
     <div class="container-table100">
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
@@ -185,7 +186,7 @@
     </div>
 </div>
 
-<div th:if="${uniqueElements!= null}">
+<div th:if="${uniqueElements!= null and !uniqueElements.empty}">
     <div class="container-table100">
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
@@ -217,19 +218,21 @@
     </div>
 </div>
 
-
 <script>
-window.onscroll = function() {myFunction()};
-var header = document.getElementById("myHeader");
-var sticky = header.offsetTop;
-function myFunction() {
-  if (window.pageYOffset >= 1) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
+    window.onscroll = function () {
+        myFunction()
+    };
+    var header = document.getElementById("myHeader");
+    var sticky = header.offsetTop;
 
+    function myFunction() {
+        if (window.pageYOffset >= 1) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
 </script>
+
 </body>
 </html>

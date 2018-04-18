@@ -30,14 +30,15 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter implements Application
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(
-                "/img/**",
                 "/css/**",
+                "/ttf/**",
                 "/js/**")
                 .addResourceLocations(
-                        "classpath:/static/img/",
                         "classpath:/static/css/",
-                        "classpath:/static/js/");
+                        "classpath:/static/js/",
+                        "classpath:/static/fonts/**");
     }
+
 
     @Bean
     @Description("Thymeleaf View Resolver")

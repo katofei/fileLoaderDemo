@@ -2,20 +2,18 @@ package com.example.demo.reports.workflow.model;
 
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.javafunk.excelparser.annotations.ExcelField;
 import org.javafunk.excelparser.annotations.ExcelObject;
 import org.javafunk.excelparser.annotations.ParseType;
 
-import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-@ExcelObject(parseType = ParseType.ROW, start = 2, end = 500)
+@ExcelObject(parseType = ParseType.ROW, start = 2, end = 1000)
 public class WebContent extends Content implements Comparable<WebContent>, Comparator<WebContent> {
 
     @ExcelField(position = 1)

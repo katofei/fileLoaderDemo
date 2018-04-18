@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,7 +37,8 @@ public class WebContentFileParser {
             List<WebContent> sectionList = parser.createEntity(sheet, WebContent.class, error -> {
                 throw error;
             });
-            contentList = new ArrayList<>(sectionList);
+            sectionList = new ArrayList<>(sectionList);
+            contentList = sectionList.stream().filter(content -> !content.checkForNull()).collect(Collectors.toList());
 
         } catch (IOException e) {
             throw new IOException("Error during parsing file");

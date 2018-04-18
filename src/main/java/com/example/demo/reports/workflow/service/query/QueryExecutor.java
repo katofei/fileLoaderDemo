@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +23,7 @@ public class QueryExecutor implements QueryReader {
 
     private static final String FILE_PATH_TO_MEDIA_SCRIPT = "/queries/get_media.sql";
     private static final String FILE_PATH_TO_CONTENT_SCRIPT = "/queries/get_web_content.sql";
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
 
     private final MediaFileRowMapper mediaMapper;
     private final WebContentRowMapper webMapper;
@@ -34,7 +39,7 @@ public class QueryExecutor implements QueryReader {
     private static final String password = System.getenv("DB_PASSWORD");
 
 
-    public List<WebContent> getAllWebContent() throws SQLException, IOException {
+    public List<WebContent> getAllWebContent() throws SQLException, IOException, ParseException {
         log.info("getAllWebContent started");
         List<WebContent> contentResultList = new ArrayList<>();
         String query = readQueryFromFile(FILE_PATH_TO_CONTENT_SCRIPT);
@@ -50,6 +55,12 @@ public class QueryExecutor implements QueryReader {
                 while (rs.next()) {
                     WebContent content = webMapper.mapRow(rs, i++);
                     content.setResource("server");
+
+                    Date modifiedWhen = content.getModifiedWhen();
+                    String formattedDate = dateFormat.format(modifiedWhen);
+                    Date parseDate = dateFormat.parse(formattedDate);
+                    content.setModifiedWhen(parseDate);
+
                     contentResultList.add(content);
                 }
             } catch (SQLException e) {
@@ -60,7 +71,7 @@ public class QueryExecutor implements QueryReader {
         }
     }
 
-    public List<MediaFile> getAllMediaFiles() throws SQLException, IOException {
+    public List<MediaFile> getAllMediaFiles() throws SQLException, IOException, ParseException {
         log.info("getAllMediaFiles started");
         List<MediaFile> mediaFileResultList = new ArrayList<>();
         String query = readQueryFromFile(FILE_PATH_TO_MEDIA_SCRIPT);
@@ -76,6 +87,12 @@ public class QueryExecutor implements QueryReader {
                 while (rs.next()) {
                     MediaFile mediaFile = mediaMapper.mapRow(rs, i++);
                     mediaFile.setResource("server");
+
+                    Date modifiedWhen = mediaFile.getModifiedWhen();
+                    String formattedDate = dateFormat.format(modifiedWhen);
+                    Date parseDate = dateFormat.parse(formattedDate);
+                    mediaFile.setModifiedWhen(parseDate);
+
                     mediaFileResultList.add(mediaFile);
                 }
             } catch (SQLException e) {

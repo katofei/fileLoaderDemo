@@ -43,7 +43,6 @@ public class TableViewController {
     private final WebContentFileParser contentFileParser;
     private final MediaFileParser mediaFileParser;
     private final FileHelper fileHelper;
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
     private static final String mediaFilePrefix = "media-file-details";
     private static final String webFilePrefix = "web-content-details";
 
@@ -67,7 +66,7 @@ public class TableViewController {
     }
 
     @GetMapping(value = "/report/view/webContent")
-    public ModelAndView viewCurrentWebContent() throws SQLException, IOException {
+    public ModelAndView viewCurrentWebContent() throws Exception {
         log.info("viewCurrentWebContent started");
         ModelAndView modelAndView = new ModelAndView("report");
         List<WebContent> allContentList = queryExecutor.getAllWebContent();
@@ -79,7 +78,7 @@ public class TableViewController {
     }
 
     @GetMapping(value = "/report/view/mediaFiles")
-    public ModelAndView viewCurrentMediaFiles() throws SQLException, IOException {
+    public ModelAndView viewCurrentMediaFiles() throws Exception {
         log.info("viewCurrentMediaFiles started");
         ModelAndView modelAndView = new ModelAndView("report");
         List<MediaFile> allMedia = queryExecutor.getAllMediaFiles();
@@ -110,14 +109,14 @@ public class TableViewController {
                     + " successfully uploaded");
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Can not parse  " +
-                    file.getOriginalFilename() + " .Please, provide correct name");
+                    file.getOriginalFilename() + " .Please, provide file with correct name");
         }
         return ("redirect:/report/compareSingleFile");
     }
 
 
     @GetMapping(value = "/report/compareSingleFile")
-    public ModelAndView compareFileWithServer(ModelMap model) throws SQLException, ParseException, IOException {
+    public ModelAndView compareFileWithServer(ModelMap model) throws Exception {
         log.info("compareFileWithServer started");
         ModelAndView modelAndView = new ModelAndView("report");
         String success = (String) model.get("successMessage");
@@ -159,31 +158,26 @@ public class TableViewController {
         for (MultipartFile file : files) {
             originalFileNames.add(file.getOriginalFilename());
         }
-        if (isFilesCompatible(originalFileNames)) {
+        if (isFilesCompatible(originalFileNames, redirectAttributes)) {
             if (originalFileNames.get(0).contains(webFilePrefix)) {
                 List<? extends Content> compareWhat = instantiateAndReadWebFile(files.get(0), request);
                 redirectAttributes.addFlashAttribute("compareWhat", compareWhat);
 
                 List<? extends Content> compareWith = instantiateAndReadWebFile(files.get(1), request);
                 redirectAttributes.addFlashAttribute("compareWith", compareWith);
-                redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
             } else if (originalFileNames.get(0).contains(mediaFilePrefix)) {
                 List<? extends Content> compareWhat = instantiateAndReaMediaFile(files.get(0), request);
                 redirectAttributes.addFlashAttribute("compareWhat", compareWhat);
 
                 List<? extends Content> compareWith = instantiateAndReaMediaFile(files.get(1), request);
                 redirectAttributes.addFlashAttribute("compareWith", compareWith);
-                redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
             }
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Files have incompatible types. " +
-                    "Please, provide files of tha same format");
         }
         return ("redirect:/report/compareMultiFile");
     }
 
     @GetMapping(value = "/report/compareMultiFile")
-    public ModelAndView compareFiles(ModelMap model) throws ParseException {
+    public ModelAndView compareFiles(ModelMap model) throws Exception {
         log.info("compareFiles started");
         ModelAndView modelAndView = new ModelAndView("report");
         String success = (String) model.get("successMessage");
@@ -211,18 +205,9 @@ public class TableViewController {
         return firstList.stream().anyMatch(elem -> secondList.containsAll(firstList));
     }
 
-    private List<? extends Content> formatDate(List<? extends Content> sourceList) throws ParseException {
-        for (Content content : sourceList) {
-            Date modifiedWhen = content.getModifiedWhen();
-            String formattedDate = dateFormat.format(modifiedWhen);
-            Date parseDate = dateFormat.parse(formattedDate);
-            content.setModifiedWhen(parseDate);
-        }
-        return sourceList;
-    }
 
-    private void compareWebContent(List<? extends Content> serverList, List<? extends Content> fileList, ModelAndView modelAndView) throws ParseException {
-        if (compareLists(formatDate(serverList), fileList)) {
+    private void compareWebContent(List<? extends Content> serverList, List<? extends Content> fileList, ModelAndView modelAndView) {
+        if (compareLists(serverList, fileList)) {
             modelAndView.addObject("allContentList", serverList);
             modelAndView.addObject("successMessage", "No differences found");
         } else {
@@ -233,8 +218,8 @@ public class TableViewController {
         }
     }
 
-    private void compareMediaFiles(List<? extends Content> serverList, List<? extends Content> fileList, ModelAndView modelAndView) throws ParseException {
-        if (compareLists(formatDate(serverList), fileList)) {
+    private void compareMediaFiles(List<? extends Content> serverList, List<? extends Content> fileList, ModelAndView modelAndView) {
+        if (compareLists(serverList, fileList)) {
             modelAndView.addObject("mediaList", serverList);
             modelAndView.addObject("successMessage", "No differences found");
         } else {
@@ -269,14 +254,12 @@ public class TableViewController {
         File report = fileHelper.upload(file, request, "xlsReports");
         List<? extends Content> contentFromFileList = initializeContentSheet(report);
         contentFromFileList.forEach(content -> content.setResource(file.getOriginalFilename()));
-//        fileHelper.delete(report);
         return contentFromFileList;
     }
 
     private List<? extends Content> initializeContentSheet(File file) throws IOException {
         log.info("initializeContentSheet started");
-        List<WebContent> webContents = contentFileParser.parse(file.getAbsolutePath());
-        return trimAndFormatCells(webContents);
+        return contentFileParser.parse(file.getAbsolutePath());
     }
 
     private List<? extends Content> instantiateAndReaMediaFile(MultipartFile file, HttpServletRequest request) throws Exception {
@@ -284,37 +267,30 @@ public class TableViewController {
         File report = fileHelper.upload(file, request, "xlsReports");
         List<? extends Content> mediaFileList = initializeMediaSheet(report);
         mediaFileList.forEach(media -> media.setResource(file.getOriginalFilename()));
-//        fileHelper.delete(report);
         return mediaFileList;
     }
 
     private List<? extends Content> initializeMediaSheet(File file) throws IOException {
         log.info("initializeMediaSheet started");
-        List<MediaFile> mediaFiles = mediaFileParser.parse(file.getAbsolutePath());
-        return trimAndFormatCells(mediaFiles);
+        return mediaFileParser.parse(file.getAbsolutePath());
     }
 
-    private boolean isFilesCompatible(List<String> names) {
+    private boolean isFilesCompatible(List<String> names, RedirectAttributes redirectAttributes) {
         log.info("isFilesCompatible started");
-        return names.stream().allMatch(name -> name.contains(webFilePrefix) || name.contains(mediaFilePrefix));
-    }
-
-    private List<? extends Content> trimAndFormatCells(List<? extends Content> sourceList) {
-        log.info("trimAndFormatCells started");
-        sourceList = sourceList.stream().filter(content -> !content.checkForNull()).collect(Collectors.toList());
-        sourceList = formatCells(sourceList);
-        return sourceList;
-    }
-
-    private List<? extends Content> formatCells(List<? extends Content> sourceList) {
-        sourceList.forEach(content -> {
-            if ("".equals(content.getPath())) {
-                content.setPath(null);
+        boolean result = false;
+        if (!names.get(0).equals(names.get(1))) {
+            if (names.stream().allMatch(name -> name.contains(webFilePrefix))) {
+                result = true;
+                redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
+            } else if (names.stream().allMatch(name -> name.contains(mediaFilePrefix))) {
+                result = true;
+                redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Files have incompatible types.\n Please, provide files of tha same format");
             }
-            if ("".equals(content.getName())) {
-                content.setName(null);
-            }
-        });
-        return sourceList;
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error !!! You have uploaded the same file twice.\n Please, select different files");
+        }
+        return result;
     }
-}
+ }
