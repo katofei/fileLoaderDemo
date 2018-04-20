@@ -5,6 +5,7 @@ out/
 .idea_modules/
 .idea/
 target
+.classes/
 .iml
 .ipr
 .iws

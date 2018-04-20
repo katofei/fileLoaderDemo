@@ -1,4 +1,4 @@
-select 
+select
     (regexp_split_to_array(title_simple, '(?<=]);'))[1] title_simple,
     id_,
     version,
@@ -7,8 +7,12 @@ select
     modifieddate,
     username modified_by,
     length(content) size_,
-    title_simple title_full
-from (SELECT 
+    title_simple title_full,
+    (
+        select string_agg((select name from journalfolder jf where jf.folderid = t.folderid::integer), ' > ')
+        from (select regexp_split_to_table(treepath, '/') folderid) t
+        where t.folderid != ''
+    ) full_path from (SELECT
   uuid_,
   id_,
   resourceprimkey,

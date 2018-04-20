@@ -24,24 +24,24 @@
                 <th>
                     <button type="button" th:onclick="|window.location.href='/report/view/webContent'|">
                         <span class="glyphicon glyphicon-info-sign"></span>
-                        <span>View web content</span>
+                        <span style="font-family: Lucida Sans Unicode, sans-serif;">View web content</span>
                     </button>
                 </th>
                 <th>
                     <button type="button" th:onclick="|window.location.href='/report/download/webContent.xls'|">
                         <span class="glyphicon glyphicon-info-sign"></span>
-                        <span>Download web report</span>
+                        <span style="font-family: Lucida Sans Unicode, sans-serif;">Download web report</span>
                     </button>
                 </th>
                 <th rowspan="2">
                     <form method="POST" th:action="@{/report/compareSingleFile}" enctype="multipart/form-data">
                         <div class="myButton">
                             <input type="file" name="multipartFile"/>
-                            <span>Choose file, please</span>
+                            <span style="font-family: Lucida Sans Unicode, sans-serif;">Choose file, please</span>
                         </div>
                         <p style="height: 15px;"></p>
                         <button type="submit">
-                            <span>Compare file with server</span>
+                            <span style="font-family: Lucida Sans Unicode, sans-serif;">Compare file with server</span>
                         </button>
                     </form>
                 </th>
@@ -49,14 +49,14 @@
                     <form method="POST" th:action="@{/report/compareMultiFile}" enctype="multipart/form-data">
                         <div class="myButton">
                             <input type="file" name="multipartFiles"/>
-                            <span>Choose file_1</span>
+                            <span style="font-family: Lucida Sans Unicode, sans-serif;">Choose file_1</span>
                         </div>
                         <div class="myButton">
                             <input type="file" name="multipartFiles"/>
-                            <span>Choose file_2</span>
+                            <span style="font-family: Lucida Sans Unicode, sans-serif;">Choose file_2</span>
                         </div>
                         <p style="height: 15px;"></p>
-                        <button type="submit"><span>Compare files</span>
+                        <button type="submit"><span style="font-family: Lucida Sans Unicode, sans-serif;">Compare files</span>
                         </button>
                     </form>
                 </th>
@@ -64,12 +64,12 @@
             <tr>
                 <th>
                     <button type="button" th:onclick="|window.location.href='/report/view/mediaFiles'|">
-                        <span>View media files</span>
+                        <span style="font-family: Lucida Sans Unicode, sans-serif;">View media files</span>
                     </button>
                 </th>
                 <th>
                     <button type="button" th:onclick="|window.location.href='/report/download/mediaFiles.xls'|">
-                        <span>Download media report</span>
+                        <span style="font-family: Lucida Sans Unicode, sans-serif;">Download media report</span>
                     </button>
                 </th>
             </tr>
@@ -91,7 +91,7 @@
     <div class="wrap-table100">
         <div class="table100 ver1 m-b-110">
             <table data-vertable="ver1">
-                <caption class="customCaption">Web content</caption>
+                <caption class="customCaption" style="font-family: Lucida Sans Unicode, sans-serif;">Web content</caption>
                 <thead>
                 <tr class="row100 head">
                     <th class="column100 column1">Title</th>
@@ -123,7 +123,7 @@
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
                 <table data-vertable="ver1">
-                    <caption class="customCaption">Media Files</caption>
+                    <caption class="customCaption" style="font-family: Lucida Sans Unicode, sans-serif;">Media Files</caption>
                     <thead>
                     <tr class="row100 head">
                         <th class="column100 column1">Title</th>
@@ -159,7 +159,7 @@
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
                 <table data-vertable="ver1">
-                    <caption class="customCaption">Different Elements</caption>
+                    <caption class="customCaption" style="font-family: Lucida Sans Unicode, sans-serif;">Different Elements</caption>
                     <thead>
                     <tr class="row100 head">
                         <th class="column100 column1">Title</th>
@@ -191,7 +191,7 @@
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
                 <table data-vertable="ver1">
-                    <caption class="customCaption">Unique Elements</caption>
+                    <caption class="customCaption" style="font-family: Lucida Sans Unicode, sans-serif;">Unique Elements</caption>
                     <thead>
                     <tr class="row100 head">
                         <th class="column100 column1">Title</th>

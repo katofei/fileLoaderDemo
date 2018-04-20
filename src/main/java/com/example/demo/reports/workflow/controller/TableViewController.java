@@ -128,14 +128,16 @@ public class TableViewController {
                 if (listFromFile.get(0) instanceof MediaFile) {
                     List<MediaFile> mediaFileListFromServer = queryExecutor.getAllMediaFiles();
                     if (mediaFileListFromServer.isEmpty()) {
-                        modelAndView.addObject("errorMessage", "Error!!\n Media files form server returned empty");
+                        modelAndView.addObject("errorMessage", "Error!!\n " +
+                                "Media files form server returned empty");
                     } else {
                         compareMediaFiles(mediaFileListFromServer, listFromFile, modelAndView);
                     }
                 } else if (listFromFile.get(0) instanceof WebContent) {
                     List<WebContent> contentListFromServer = queryExecutor.getAllWebContent();
                     if (contentListFromServer.isEmpty()) {
-                        modelAndView.addObject("errorMessage", "Error!!\n Web content  form server returned empty");
+                        modelAndView.addObject("errorMessage", "Error!!\n " +
+                                "Web content  form server returned empty");
                     } else {
                         compareWebContent(contentListFromServer, listFromFile, modelAndView);
                     }
@@ -177,7 +179,7 @@ public class TableViewController {
     }
 
     @GetMapping(value = "/report/compareMultiFile")
-    public ModelAndView compareFiles(ModelMap model) throws Exception {
+    public ModelAndView compareFiles(ModelMap model) {
         log.info("compareFiles started");
         ModelAndView modelAndView = new ModelAndView("report");
         String success = (String) model.get("successMessage");
@@ -242,7 +244,8 @@ public class TableViewController {
                 }
             }
         }
-        List<Content> joinedList = Stream.concat(elementsFromFirst.stream(), elementsFromSecond.stream()).sorted().collect(Collectors.toList());
+        List<Content> joinedList = Stream.concat(elementsFromFirst.stream(), elementsFromSecond.stream())
+                .sorted().collect(Collectors.toList());
         joinedList.removeAll(mergedElements);
         modelMap.addAttribute("mergedElements", mergedElements);
         modelMap.addAttribute("uniqueElements", joinedList);

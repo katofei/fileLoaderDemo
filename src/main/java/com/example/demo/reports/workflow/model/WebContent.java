@@ -36,7 +36,7 @@ public class WebContent extends Content implements Comparable<WebContent>, Compa
     @Override
     public final boolean checkForNull() {
         return getName() == null && this.getPath() == null && getModifiedWhen() == null && getSize() == null
-                && getVersion() == null && modifiedBy== null;
+                && getVersion() == null && getModifiedBy()== null;
     }
 
     @Override

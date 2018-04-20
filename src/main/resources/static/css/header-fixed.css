@@ -18,8 +18,9 @@
 }
 
 .header-fixed .header-limiter span{
-	font-family: Montserrat-Regular;
-    font-size: 14px;
+	/*font-family: Montserrat-Regular;*/
+    font-size: 13px;
+	font-weight: bold;
 }
 
 
