@@ -71,4 +71,13 @@ public class WebContent extends Content implements Comparable<WebContent>, Compa
             return 1;
         } else return -1;
     }
+
+    public static void removeEmptyStrings(WebContent content){
+        if("".equals(content.getName())){
+            content.setName(null);
+        }
+        if("".equals(content.getPath())){
+            content.setPath(null);
+        }
+    }
 }

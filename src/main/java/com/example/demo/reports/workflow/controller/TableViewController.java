@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,14 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -255,33 +247,27 @@ public class TableViewController {
     private List<? extends Content> instantiateAndReadWebFile(MultipartFile file, HttpServletRequest request) throws Exception {
         log.info("instantiateAndReadWebFile started");
         File report = fileHelper.upload(file, request, "xlsReports");
-        List<? extends Content> contentFromFileList = initializeContentSheet(report);
+        List<? extends Content> contentFromFileList = contentFileParser.parse(report.getAbsolutePath());
         contentFromFileList.forEach(content -> content.setResource(file.getOriginalFilename()));
         return contentFromFileList;
-    }
-
-    private List<? extends Content> initializeContentSheet(File file) throws IOException {
-        log.info("initializeContentSheet started");
-        return contentFileParser.parse(file.getAbsolutePath());
     }
 
     private List<? extends Content> instantiateAndReaMediaFile(MultipartFile file, HttpServletRequest request) throws Exception {
         log.info("instantiateAndReaMediaFile started");
         File report = fileHelper.upload(file, request, "xlsReports");
-        List<? extends Content> mediaFileList = initializeMediaSheet(report);
+        List<? extends Content> mediaFileList = mediaFileParser.parse(report.getAbsolutePath());
         mediaFileList.forEach(media -> media.setResource(file.getOriginalFilename()));
         return mediaFileList;
-    }
-
-    private List<? extends Content> initializeMediaSheet(File file) throws IOException {
-        log.info("initializeMediaSheet started");
-        return mediaFileParser.parse(file.getAbsolutePath());
     }
 
     private boolean isFilesCompatible(List<String> names, RedirectAttributes redirectAttributes) {
         log.info("isFilesCompatible started");
         boolean result = false;
-        if (!names.get(0).equals(names.get(1))) {
+        if (names.get(0).equals(names.get(1))) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error !!! " +
+                    "You have uploaded the same file twice.\n" +
+                    "Please, select different files");
+        } else {
             if (names.stream().allMatch(name -> name.contains(webFilePrefix))) {
                 result = true;
                 redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
@@ -289,11 +275,10 @@ public class TableViewController {
                 result = true;
                 redirectAttributes.addFlashAttribute("successMessage", "Files successfully added");
             } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "Files have incompatible types.\n Please, provide files of tha same format");
+                redirectAttributes.addFlashAttribute("errorMessage", "Files have incompatible types.\n" +
+                        " Please, provide files of tha same format");
             }
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error !!! You have uploaded the same file twice.\n Please, select different files");
         }
         return result;
     }
- }
+}

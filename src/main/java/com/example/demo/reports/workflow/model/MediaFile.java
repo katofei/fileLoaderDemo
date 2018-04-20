@@ -77,4 +77,19 @@ public class MediaFile extends Content implements Comparable<MediaFile>, Compara
             return 1;
         } else return -1;
     }
+
+    public static void removeEmptyStrings(MediaFile mediaFile){
+        if("".equals(mediaFile.getName())){
+            mediaFile.setName(null);
+        }
+        if("".equals(mediaFile.getPath())){
+            mediaFile.setPath(null);
+        }
+        if("".equals(mediaFile.getExtension())){
+            mediaFile.setExtension(null);
+        }
+        if("".equals(mediaFile.getMimeType())){
+            mediaFile.setMimeType(null);
+        }
+    }
 }

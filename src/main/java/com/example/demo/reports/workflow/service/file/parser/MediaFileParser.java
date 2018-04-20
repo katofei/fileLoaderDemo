@@ -37,7 +37,7 @@ public class MediaFileParser {
             });
             sectionList = new ArrayList<>(sectionList);
             mediaFileList = sectionList.stream().filter(content -> !content.checkForNull()).collect(Collectors.toList());
-
+            mediaFileList.forEach(MediaFile::removeEmptyStrings);
         } catch (IOException e) {
             throw new IOException("Error during parsing file");
         }

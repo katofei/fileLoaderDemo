@@ -39,7 +39,7 @@ public class WebContentFileParser {
             });
             sectionList = new ArrayList<>(sectionList);
             contentList = sectionList.stream().filter(content -> !content.checkForNull()).collect(Collectors.toList());
-
+            contentList.forEach(WebContent::removeEmptyStrings);
         } catch (IOException e) {
             throw new IOException("Error during parsing file");
         }

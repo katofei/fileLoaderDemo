@@ -61,6 +61,8 @@ public class QueryExecutor implements QueryReader {
                     Date parseDate = dateFormat.parse(formattedDate);
                     content.setModifiedWhen(parseDate);
 
+                    WebContent.removeEmptyStrings(content);
+
                     contentResultList.add(content);
                 }
             } catch (SQLException e) {
@@ -92,6 +94,8 @@ public class QueryExecutor implements QueryReader {
                     String formattedDate = dateFormat.format(modifiedWhen);
                     Date parseDate = dateFormat.parse(formattedDate);
                     mediaFile.setModifiedWhen(parseDate);
+
+                    MediaFile.removeEmptyStrings(mediaFile);
 
                     mediaFileResultList.add(mediaFile);
                 }
